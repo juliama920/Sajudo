@@ -10,3 +10,5 @@ https://www.kaggle.com/datasets/sanjeetsinghnaik/top-1000-highest-grossing-movie
 "movies(1986-2016).csv"
 DANIEL GRIJALVA
 https://www.kaggle.com/datasets/danielgrijalvas/movies
+NASDAQ dataset:
+https://www.kaggle.com/code/jacksoncrow/download-nasdaq-historical-data/data
