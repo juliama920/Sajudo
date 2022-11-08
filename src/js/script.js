@@ -16,8 +16,6 @@ console.log(streamChart instanceof StreamChart);
 
 drawAll();
 
-streamChart.test();
-
 //Run draw functions for every Vis
 function drawAll(){
     console.log("drawing All");

@@ -9,10 +9,9 @@ class StreamChart{
     //draw function for this chart. do not call drawAll from here.
     draw(){
         console.log("drawing streamchart");
-        console.log(this.redrawOthers)
-    }
+        // d3.select("#blah").data(globalFlags.grossing).enter().append()
 
-    test(){
-        this.redrawOthers();
+        this.globalFlags.test = "true";
+        this.redrawOthers(this)
     }
 }
