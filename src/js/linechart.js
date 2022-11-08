@@ -9,5 +9,6 @@ class LineChart{
     //draw function for this chart. do not call drawAll from here.
     draw(){
         console.log("drawing linechart");
+        // this.redrawOthers(this);
     }
 }
