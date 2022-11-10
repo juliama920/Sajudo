@@ -23,7 +23,7 @@ class StreamChart{
     drawStreamChart(){
         console.log(this.globalFlags);
        // set the dimensions and margins of the graph
-        const margin = {top: 20, right: 30, bottom: 30, left: 60},
+        const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -37,14 +37,26 @@ class StreamChart{
             `translate(${margin.left}, ${margin.top})`);
 
         // Parse the Data
-        d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/5_OneCatSevNumOrdered_wide.csv").then( function(data) {
 
         // List of groups = header of the csv files
-        const keys = data.columns.slice(1)
+        //TODO: this needs to be genres
+        const keys = this.globalFlags.grossing.columns.slice(1);
+
+        var parseTime = d3.timeParse("%B %d, %Y");
+        console.log(parseTime);
+
+        console.log(parseTime("Mar 30, 2016"));
+
+        console.log(d3.extent(this.globalFlags.grossing, function(d) { 
+            // console.log(parseTime(d["Release Date"]));
+            return parseTime(d["Release Date"]);
+        }));
 
         // Add X axis
-        const x = d3.scaleLinear()
-        .domain(d3.extent(data, function(d) { return d.year; }))
+        const x = d3.scaleTime()
+        .domain(d3.extent(this.globalFlags.grossing, function(d) { 
+            return parseTime(d["Release Date"]);
+        }))
         .range([ 0, width ]);
         svg.append("g")
         .attr("transform", `translate(0, ${height})`)
@@ -52,8 +64,12 @@ class StreamChart{
 
         // Add Y axis
         const y = d3.scaleLinear()
-        .domain([-100000, 100000])
+        .domain(d3.extent(this.globalFlags.grossing, function(d) { 
+            // console.log(parseTime(d["Release Date"]));
+            return parseInt(d["World Sales (in $)"]);
+        }))
         .range([ height, 0 ]);
+
         svg.append("g")
         .call(d3.axisLeft(y));
 
@@ -66,7 +82,9 @@ class StreamChart{
         const stackedData = d3.stack()
         .offset(d3.stackOffsetSilhouette)
         .keys(keys)
-        (data)
+        (this.globalFlags.grossing)
+
+        console.log(stackedData);
 
         // Show the areas
         svg
@@ -74,12 +92,12 @@ class StreamChart{
         .data(stackedData)
         .join("path")
         .style("fill", function(d) { return color(d.key); })
-        .attr("d", d3.area()
-            .x(function(d, i) { return x(d.data.year); })
+        .attr("d", function(d) {
+            // console.log(d);
+            return d3.area()
+            .x(function(d, i) { return x(parseTime(d.data["Release Date"])); })
             .y0(function(d) { return y(d[0]); })
-            .y1(function(d) { return y(d[1]); })
-        )
-
+            .y1(function(d) { return y(d[1]); });
         })
     }
 }
