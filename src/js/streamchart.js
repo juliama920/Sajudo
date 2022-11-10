@@ -21,7 +21,7 @@ class StreamChart{
     }
 
     drawStreamChart(){
-        console.log(this.globalFlags);
+        // console.log(this.globalFlags);
        // set the dimensions and margins of the graph
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
@@ -40,17 +40,11 @@ class StreamChart{
 
         // List of groups = header of the csv files
         //TODO: this needs to be genres
+        console.log(this.getAllGenres());
+    
         const keys = this.globalFlags.grossing.columns.slice(1);
 
         var parseTime = d3.timeParse("%B %d, %Y");
-        console.log(parseTime);
-
-        console.log(parseTime("Mar 30, 2016"));
-
-        console.log(d3.extent(this.globalFlags.grossing, function(d) { 
-            // console.log(parseTime(d["Release Date"]));
-            return parseTime(d["Release Date"]);
-        }));
 
         // Add X axis
         const x = d3.scaleTime()
@@ -65,7 +59,6 @@ class StreamChart{
         // Add Y axis
         const y = d3.scaleLinear()
         .domain(d3.extent(this.globalFlags.grossing, function(d) { 
-            // console.log(parseTime(d["Release Date"]));
             return parseInt(d["World Sales (in $)"]);
         }))
         .range([ height, 0 ]);
@@ -87,17 +80,33 @@ class StreamChart{
         console.log(stackedData);
 
         // Show the areas
-        svg
-        .selectAll("mylayers")
-        .data(stackedData)
-        .join("path")
-        .style("fill", function(d) { return color(d.key); })
-        .attr("d", function(d) {
-            // console.log(d);
-            return d3.area()
-            .x(function(d, i) { return x(parseTime(d.data["Release Date"])); })
-            .y0(function(d) { return y(d[0]); })
-            .y1(function(d) { return y(d[1]); });
-        })
+        // svg
+        // .selectAll("mylayers")
+        // .data(stackedData)
+        // .join("path")
+        // .style("fill", function(d) { return color(d.key); })
+        // .attr("d", function(d) {
+        //     // console.log(d);ow["Genre"]
+        //     return d3.area()
+        //     .x(function(d, i) { return x(parseTime(d.data["Release Date"])); })
+        //     .y0(function(d) { return y(d[0]); })
+        //     .y1(function(d) { return y(d[1]); });
+        // })
+    }
+
+    //Return Array containing all Genres that appear in grossing
+    getAllGenres(){
+        let genres = [];
+
+        for(let row of this.globalFlags.grossing){
+            let movieGenres = row["Genre"].replaceAll("[", "").replaceAll("]", "").replaceAll("'","").replaceAll(" ", "").split(",");
+            for(let genre of movieGenres){
+                if(!(genres.includes(genre))){
+                    genres.push(genre);
+                }
+            }
+        }
+
+        return genres;
     }
 }
