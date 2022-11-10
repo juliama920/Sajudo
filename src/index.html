@@ -48,9 +48,19 @@
     <hr />
     <br />
 
-    <div >
-        <svg class="barChart" width="800" height="500"></svg>
+    <div id="content">
+      <div id="lineChart">
+        <svg class="lineChart" width="800" height="500"></svg>
+      </div>
+
+      <div id="table">
+      </div>
+
+      <div id="bubbleChart">
+          Enter your max number to filter the data to smaller than your max (should be between 100-1600): <input type="text" value="" id="start"/><br><br>
+          Enter a companey name to filter the data to that companey: <input type="text" value="" id="companey"/>
         <svg class="bubbleChart" width="800" height="500"></svg>
+        
         <svg class="lineChart" width="800" height="500"></svg>
         <svg class="streamChart" width="800" height="500"></svg>
         <svg class="table" width="800" height="500"></svg>
