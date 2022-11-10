@@ -42,3 +42,12 @@
     grid-row-start: 6;
     grid-row-end: 8;
 }
+
+table, th, td, tr {
+    border: 1px solid black;
+    border-collapse: collapse;
+
+}
+tr.active{
+    background: steelblue;
+}
