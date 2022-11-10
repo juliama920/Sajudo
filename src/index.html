@@ -8,13 +8,6 @@
     <!-- Include JS scripts -->
       <script src="https://d3js.org/d3.v7.min.js"></script>
 
-//Import js scripts
-      <script src="./js/barchart.js"></script>
-      <script src="./js/bubblechart.js"></script>
-      <script src="./js/linechart.js"></script>
-      <script src="./js/streamchart.js"></script>
-      <script src="./js/table.js"></script>
-      <script src="./js/script.js"></script>
      <link rel="stylesheet" href="styles.css" />
     <!-- End of includes -->
 </head>
@@ -68,6 +61,8 @@
       </div>
 
       <div id="bubbleChart">
+          Enter your max number to filter the data to smaller than your max (should be between 100-1600): <input type="text" value="" id="start"/><br><br>
+          Enter a companey name to filter the data to that companey: <input type="text" value="" id="companey"/>
         <svg class="bubbleChart" width="800" height="500"></svg>
       </div>
 
@@ -86,6 +81,13 @@
 
     <footer>
         <h1>footer</h1>
+        <!-- //Import js scripts -->
+      <script src="./js/barchart.js"></script>
+      <script src="./js/bubblechart.js"></script>
+      <script src="./js/linechart.js"></script>
+      <script src="./js/streamchart.js"></script>
+      <script src="./js/table.js"></script>
+      <script src="./js/script.js"></script>
     </footer>
 </body>
 </html>

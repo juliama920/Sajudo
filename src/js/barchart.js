@@ -8,7 +8,7 @@ class BarChart{
     
     //draw function for this chart. do not call drawAll from here.
     draw(){
-        console.log("drawing barChart");
+        // console.log("drawing barChart");
         // this.redrawOthers(this);
     }
 }
