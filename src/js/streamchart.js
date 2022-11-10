@@ -40,7 +40,11 @@ class StreamChart{
 
         // List of groups = header of the csv files
         //TODO: this needs to be genres
-        console.log(this.getAllGenres());
+        console.log(this.getAllGrossingGenres());
+
+        let grossingGenres = this.getAllGrossingGenres();
+        
+        console.log(this.getAllMovieGenres());
     
         const keys = this.globalFlags.grossing.columns.slice(1);
 
@@ -86,7 +90,6 @@ class StreamChart{
         // .join("path")
         // .style("fill", function(d) { return color(d.key); })
         // .attr("d", function(d) {
-        //     // console.log(d);ow["Genre"]
         //     return d3.area()
         //     .x(function(d, i) { return x(parseTime(d.data["Release Date"])); })
         //     .y0(function(d) { return y(d[0]); })
@@ -95,11 +98,12 @@ class StreamChart{
     }
 
     //Return Array containing all Genres that appear in grossing
-    getAllGenres(){
+    getAllGrossingGenres(){
         let genres = [];
-
+        
         for(let row of this.globalFlags.grossing){
             let movieGenres = row["Genre"].replaceAll("[", "").replaceAll("]", "").replaceAll("'","").replaceAll(" ", "").split(",");
+
             for(let genre of movieGenres){
                 if(!(genres.includes(genre))){
                     genres.push(genre);
@@ -107,6 +111,21 @@ class StreamChart{
             }
         }
 
-        return genres;
+        return genres.sort();
+    }
+
+    //Return Array containing all Genres that appear in movies
+    getAllMovieGenres(){
+        let genres = [];
+        for(let row of this.globalFlags.movies){
+            if(!genres.includes(row.genre)){
+                genres.push(row.genre);
+            }
+        }
+
+        return genres.sort();
+    }
+
+    convertGenreValueToArray(){
     }
 }
