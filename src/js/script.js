@@ -3,14 +3,13 @@ let globalFlags = {};
 
 let movieCSVPath = "../../data/movies(1986-2016).csv";
 let grossingCSVPath = "../../data/Highest Holywood Grossing Movies.csv";
-
+let combinedCSVPath = "../../data/combined.csv";
 //Wait for promise to resolve with data and then call draw functions
-Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath)]).then(data => {
+Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPath)]).then(data => {
     //Load in movies csv
     globalFlags.movies = data[0];
     globalFlags.grossing = data[1];
-
-
+    globalFlags.combined=data[2];
     let barChart = new BarChart(globalFlags, redrawOthers);
     let bubbleChart = new BubbleChart(globalFlags, redrawOthers);
     let lineChart = new LineChart(globalFlags, redrawOthers);
@@ -18,7 +17,6 @@ Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath)]).then(data => {
     let table = new Table(globalFlags, redrawOthers);
 
     // console.log(streamChart instanceof StreamChart);
-
     drawAll(barChart, bubbleChart, lineChart, streamChart, table);
 });
 
@@ -80,4 +78,3 @@ function redrawOthers(objectCalledFrom){
 //     console.log(grossing);
 //     return {movies: movies, grossing: grossing};
 // }
-
