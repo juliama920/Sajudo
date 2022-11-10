@@ -14,13 +14,14 @@ class StreamChart{
         this.drawStreamChart();
         // streamChartSVG.selectAll("path").data(this.globalFlags).join("path").attr("fill", "steelblue").attr("d", 100).attr("r", 10);
 
-        console.log("drawing streamchart");
+        // console.log("drawing streamchart");
 
         this.globalFlags.test = "true";
         // this.redrawOthers(this)
     }
 
     drawStreamChart(){
+        console.log(this.globalFlags);
        // set the dimensions and margins of the graph
         const margin = {top: 20, right: 30, bottom: 30, left: 60},
         width = 800 - margin.left - margin.right,
