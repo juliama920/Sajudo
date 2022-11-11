@@ -40,11 +40,11 @@ class StreamChart{
 
         // List of groups = header of the csv files
         //TODO: this needs to be genres
-        console.log(this.getAllGrossingGenres());
+        // console.log(this.getAllGrossingGenres());
 
         let grossingGenres = this.getAllGrossingGenres();
         
-        console.log(this.getAllMovieGenres());
+        // console.log(this.getAllMovieGenres());
     
         const keys = this.globalFlags.grossing.columns.slice(1);
 
@@ -81,7 +81,7 @@ class StreamChart{
         .keys(keys)
         (this.globalFlags.grossing)
 
-        console.log(stackedData);
+        // console.log(stackedData);
 
         // Show the areas
         // svg
