@@ -22,7 +22,7 @@ class BarChart{
 
         let rects = d3.select(".barChart").append("g").attr("id", "rects");
 
-        let topThirty = this.genreRevenueMap.get(this.genreSelected).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,30);
+        let topThirty = this.genreRevenueMap.get(this.genreSelected).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,40);
 
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
