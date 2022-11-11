@@ -13,7 +13,7 @@ class Table{
         let thisH = this;
         
         let distributors = d3.group(this.data.grossing, (d)=> d['Distributor']);
-        console.log(distributors.keys())
+        // console.log(distributors.keys())
 
         let rowSelection = d3.select('#tableBody')
             .selectAll('tr')
@@ -29,7 +29,7 @@ class Table{
             .on('click', function(d){
                 d3.select(this)
                     .attr('background', 'steelblue');
-                console.log(this);
+                // console.log(this);
                 // this.toggleClass('active')
             });
     }
