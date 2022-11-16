@@ -1,7 +1,6 @@
 class LineChart{
 
 constructor(globalFlags, redrawOthers) {
-    console.log(screen.availWidth)
     this.data = globalFlags;
     this.redrawOthers = redrawOthers;
     
