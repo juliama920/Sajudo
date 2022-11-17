@@ -27,13 +27,20 @@ class BarChart{
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
+        //console.log(this.globalFlags.combined);
         
-        rects.selectAll("rect").data(topThirty).join("rect").transition().attr("fill", "steelblue")
+        rects.selectAll("rect").data(topThirty).join("rect").transition().attr("id", d => d["Title"]).attr("fill", "steelblue")
         .attr("x", (d, i) => {
+            let date = d["Release Date"];
             let parse = d3.timeParse("%B %d, %Y");
-            let x = this.xScale(parse(d["Release Date"]));
-            console.log(x);
-            return x + 20;
+
+            if(!parse(date)) {
+                parse = d3.timeParse("%Y");
+                date = parseInt(d["Title"].match(/\s[(][0-9]*[)]/)[0].replace("(", "").replace(")", ""));
+            }
+            
+            let x = this.xScale(parse(date));
+            return x + 80;
         })
         .attr("y", (d, i) => {
             return this.yScale(d["International Sales (in $)"]) - 30;
@@ -88,7 +95,7 @@ class BarChart{
     registerListeners(){
         d3.select("#genreDropdown").on("click", e => {
             this.genreSelected = e.target.value;
-            console.log(e.target.value);
+            //console.log(e.target.value);
             this.drawRects();
         });
     }

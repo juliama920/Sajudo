@@ -43,7 +43,7 @@ class LineChart{
     drawLines(xScale, yScale) {
         let svg = d3.select('.lineChart');
         let distributors = d3.group(this.data.grossing, (d)=> d['Distributor']);
-        console.log(distributors)
+        //console.log(distributors)
 
         distributors.forEach(function(d) {
             // console.log(d)

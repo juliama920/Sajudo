@@ -63,7 +63,38 @@
       <div id="bubbleChart">
           Enter your max number to filter the data to smaller than your max (should be between 100-1600): <input type="text" value="" id="start"/><br><br>
           Enter a companey name to filter the data to that companey: <input type="text" value="" id="companey"/>
-        <svg class="bubbleChart" width="800" height="500"></svg>
+          <span>
+            <label>Bubble Plot type:</label>
+            <select id="type">
+              <option value="scatter">Scatter plot</option>
+              <option selected value="beeswarm">Beeswarm</option>
+            </select>
+          </span>
+          <span>
+            <label>xFeatures:</label>
+            <select id="xFeatures">
+              <option value="domesticSale">Domestic sale($)</option>
+              <option selected value="worldSale">World sale ($)</option>
+              <option value="internationalSale">International sale ($)</option>
+              <option value="runTime">Run time</option>
+              <option value="imdbScore">IMDb score</option>
+              <option value="votes">Votes</option>
+              <option value="budget">Budger</option>
+            </select>
+          </span>
+          <span>
+            <label>yFeatures</label>
+            <select id="xFeatures">
+            <option value="domesticSale">Domestic sale($)</option>
+              <option selected value="imdbScore">IMDb score</option>
+              <option value="internationalSale">International sale ($)</option>
+              <option value="runTime">Run time</option>
+              <option value="worldSale">World sale ($)</option>
+              <option value="votes">Votes</option>
+              <option value="budget">Budger</option>
+            </select>
+          </span>
+          <svg class="bubbleChart" width="800" height="500"></svg>
       </div>
 
       <div id="streamChart">
@@ -75,14 +106,29 @@
       </div>
       
       <div id="infoTable">
+
+        <table id="predictionTable">
+          <thead>
+          <tr id="columnHeaders">
+              <th><svg id="margin1Axis"></svg> </th>
+              <th><svg id="margin2Axis"></svg> </th>
+              <th><svg id="margin3Axis"></svg> </th>
+              <th><svg id="margin4Axis"></svg> </th>
+              <th><svg id="margin5Axis"></svg> </th>
+              <th><svg id="margin6Axis"></svg> </th>
+          </tr>
+          </thead>
+          <tbody id="predictionTableBody">
+          </tbody>
+      </table>
       </div> 
         
     </div>
 
-    <footer>
-        <h1>footer</h1>
+   
         <!-- //Import js scripts -->
       <script src="./js/barchart.js"></script>
+      <script src="./js/infotable.js"></script>
       <script src="./js/bubblechart.js"></script>
       <script src="./js/linechart.js"></script>
       <script src="./js/streamchart.js"></script>

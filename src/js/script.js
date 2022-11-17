@@ -15,14 +15,15 @@ Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPa
     let lineChart = new LineChart(globalFlags, redrawOthers);
     let streamChart = new StreamChart(globalFlags, redrawOthers);
     let table = new Table(globalFlags, redrawOthers);
+    let infoTable = new Info(globalFlags, redrawOthers);
 
     // console.log(streamChart instanceof StreamChart);
-    drawAll(barChart, bubbleChart, lineChart, streamChart, table);
+    drawAll(barChart, bubbleChart, lineChart, streamChart, table, infoTable);
 });
 
 
 //Run draw functions for every Vis
-function drawAll(barChart, bubbleChart, lineChart, streamChart, table){
+function drawAll(barChart, bubbleChart, lineChart, streamChart, table,infoTable){
     // console.log("drawing All");
 
     barChart.draw();
@@ -30,6 +31,7 @@ function drawAll(barChart, bubbleChart, lineChart, streamChart, table){
     lineChart.draw();
     streamChart.draw();
     table.draw();
+    infoTable.drawTable();
 }
 
 function redrawOthers(objectCalledFrom){
@@ -39,6 +41,7 @@ function redrawOthers(objectCalledFrom){
         lineChart.draw();
         streamChart.draw();
         table.draw();
+        infoTable.drawTable()
     }
 
     if(objectCalledFrom instanceof BubbleChart) {
@@ -46,6 +49,7 @@ function redrawOthers(objectCalledFrom){
         lineChart.draw();
         streamChart.draw();
         table.draw();
+        infoTable.drawTable()
     }
 
     if(objectCalledFrom instanceof LineChart){
@@ -53,6 +57,7 @@ function redrawOthers(objectCalledFrom){
         table.draw();
         barChart.draw();
         bubbleChart.draw();
+        infoTable.drawTable()
     }
 
     if(objectCalledFrom instanceof StreamChart){
@@ -61,6 +66,7 @@ function redrawOthers(objectCalledFrom){
         barChart.draw();
         bubbleChart.draw();
         lineChart.draw();
+        infoTable.drawTable()
     }
 
     if(objectCalledFrom instanceof Table){
@@ -68,6 +74,15 @@ function redrawOthers(objectCalledFrom){
         bubbleChart.draw();
         lineChart.draw();
         streamChart.draw();
+        infoTable.drawTable()
+    }
+
+    if(objectCalledFrom instanceof Info){
+        barChart.draw();
+        bubbleChart.draw();
+        lineChart.draw();
+        streamChart.draw();
+        infoTable.drawTable()
     }
 }
 
