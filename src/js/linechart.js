@@ -150,6 +150,7 @@ drawLines(xScale, yScale, data) {
     // let maxDate = xScale.invert(1000);
     // let minDate = xScale.invert(0);
     
+    let hold = this;
     let lines = svg.append('g')
         .attr('id', 'lines')
         .selectAll('path')
@@ -179,6 +180,11 @@ drawLines(xScale, yScale, data) {
         .on('mouseout', function() {
             lines.attr('stroke', 'steelblue')
                 .attr('stroke-width','1');
+        })
+        .on('click', function(d) {
+            console.log(d.target.__data__[0])
+            hold.data.selectedDistributor = d.target.__data__[0];
+            hold.redrawOthers(hold);
         });
     lines.attr('transform', `translate(${80}, ${50})`);
 }
