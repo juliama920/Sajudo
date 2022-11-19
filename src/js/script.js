@@ -17,6 +17,9 @@ Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPa
     let table = new Table(globalFlags, redrawOthers);
     let infoTable = new Info(globalFlags, redrawOthers);
 
+    globalFlags.selectedMovie = null;
+    globalFlags.selectedDistributor = null;
+
     // console.log(streamChart instanceof StreamChart);
     drawAll(barChart, bubbleChart, lineChart, streamChart, table, infoTable);
 });
