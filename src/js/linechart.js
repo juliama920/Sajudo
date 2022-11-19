@@ -133,43 +133,35 @@ drawAxis(xScale, yScale) {
     
 }
 
-    drawLines(xScale, yScale) {
-        let svg = d3.select('.lineChart');
-        let distributors = d3.group(this.data.grossing, (d)=> d['Distributor']);
-        console.log(distributors)
+drawLines(xScale, yScale, data) {
+    let svg = d3.select('.lineChart');
+    svg.select('#lines').remove();
+    let distributors = d3.group(data, (d)=> d['Distributor']);
+    
+    distributors.forEach(function(d) {
+        d.sort((a,b) => (a['Title'].slice(-6) > b['Title'].slice(-6))? 1:-1);
+        let hold = 0;
+        for (let i = 0; i < d.length; i++) {
+            hold = hold + parseFloat(d[i]['World Sales (in $)']);
+            d[i]['salesAccum'] = hold;
+        }
+    });
 
-        distributors.forEach(function(d) {
-            // console.log(d)
-            d.sort((a,b) => (a['Title'].slice(-6) > b['Title'].slice(-6))? 1:-1);
-            let hold = 0;
-            for (let i = 0; i < d.length; i++) {
-                hold = hold +  parseFloat(d[i]['World Sales (in $)']);
-                d[i]['salesAccum'] = hold;
-            }
-        });
-        // console.log(distributors)
-        // for (let i = 0; i < distributors.size; i ++) {
-        //     for (let j = 0; j < distributors[i].length; j++) {
-        //         console.log(distributors[i])
-        //     }
-        // }
-        // let distrWorldSales = [
-        //     {}
-        // ]
-
-        let lines = svg.append('g')
-            .attr('id', 'lines')
-            .selectAll('path')
-            .data(distributors)
-            .join('path')
-            .attr('fill', 'none')
-            .attr('stroke', 'steelblue')
-            .attr('stroke-width', 1)
-            .attr('d', ([group, values]) => d3.line()
-                .x(function(d) {
-                    // console.log(d)
-                    let date = d['Title'].substr(-5).slice(0,-1);
-                    // console.log(date);
+    // let maxDate = xScale.invert(1000);
+    // let minDate = xScale.invert(0);
+    
+    let lines = svg.append('g')
+        .attr('id', 'lines')
+        .selectAll('path')
+        .data(distributors)
+        .join('path')
+        .attr('fill', 'none')
+        .attr('stroke', 'steelblue')
+        .attr('stroke-width', 1)
+        .attr('d', ([group, values]) => d3.line()
+            .x(function(d) {
+                let date = d['Title'].substr(-5).slice(0,-1);
+                // if (xScale(new Date(date)) >= 0)
                     return xScale(new Date(date))
             })
             .y(function(d) {
