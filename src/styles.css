@@ -1,22 +1,39 @@
 #content {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 375px 375px 210px 375px;
     grid-auto-rows: 250px;
     grid-gap: 20px;
 }
 
 #lineChart{
     grid-column-start: 1;
-    grid-column-end: 1;
+    grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 3;
 }
 #table{
-    grid-column-start: 2;
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    display: grid;
+    grid-template-columns: 270px 270px;
+    grid-auto-rows: 250px;
+    /* grid-gap: px; */
+
+}
+#table.table{
+    grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 1;
     grid-row-end: 3;
+}#table.moveTable{
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 3;
 }
+
 #bubbleChart{
     grid-column-start: 1;
     grid-column-end: 4;
@@ -26,13 +43,13 @@
 
 #streamChart{
     grid-column-start: 1;
-    grid-column-end: 2;
+    grid-column-end: 3;
     grid-row-start: 5;
     grid-row-end: 7;
 }
 #barChart{
-    grid-column-start: 2;
-    grid-column-end: 4;
+    grid-column-start: 3;
+    grid-column-end: 5;
     grid-row-start: 5;
     grid-row-end: 7;
 }
@@ -46,8 +63,177 @@
 table, th, td, tr {
     border: 1px solid black;
     border-collapse: collapse;
-
 }
+td{
+    width: 250px;
+}
+
+.table-scroll {
+    height: 500px;
+    width: 2750px;
+    overflow: auto;
+    /* overflow-y: hidden */
+}
+::-webkit-scrollbar {
+    width: 14px;
+    height: 18px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    height: 6px;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    background-color: rgba(0, 0, 0, 0, 0.2);
+    -webkit-border-radius: 7px;
+    -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05),
+      inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+  }
+  
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  
+  ::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+
 tr.active{
     background: steelblue;
+}
+
+table {
+    border-collapse: collapse;
+    font: 14px sans-serif;
+}
+.tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgb(243, 240, 240);
+    color: rgb(9, 9, 9);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+circle:hover{
+    stroke-width: 3;
+}
+.tooltip:hover  {
+    visibility: visible;
+  } 
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+  th:first-of-type {
+    text-align: left;
+}
+
+th {
+    font-weight: bold;
+    text-align: center;
+    padding-right: 6px;
+    min-width: 125px;
+}
+
+th:last-of-type
+{
+    text-align: right;
+}
+
+td:first-of-type {
+    text-align: left;
+}
+
+
+td {
+    text-align: center;
+}
+
+td:last-of-type
+{
+    text-align: center;
+}
+
+.sorting {
+    background: black;
+    color: white;
+}
+
+.sortable {
+    user-select: none;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.sortable:hover {
+    background: #d1d1d1;
+}
+
+.sortable.sorting:hover {
+    background: #232323;
+}
+
+.trump {
+    color: firebrick;
+    fill: firebrick;
+}
+
+.biden {
+    color: steelblue;
+    fill: steelblue;
+}
+
+td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 5px;
+    padding-left: 5px;
+    color:black;
+}
+
+#predictionTable td {
+    line-height: 0;
+}
+
+#predictionTable tbody tr {
+    cursor: pointer;
+}
+
+tbody tr:hover {
+    background-color: #efefef;
+}
+
+.label{
+    text-anchor: middle;
+}
+
+@font-face {
+    font-family: 'font1';
+    src: url('assets/font1.ttf');
+}
+
+h1 {
+    margin-top: 0;
+    color: #343651;
+}
+
+h2 {
+    color: #343651;
+
+}
+
+* {
+    font-family: 'font1';
+}
+
+header {
+    padding: 0.5em;
+    text-align: center;
+    height: 100px;
 }

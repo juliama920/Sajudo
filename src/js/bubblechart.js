@@ -1,13 +1,10 @@
 class BubbleChart{
 
     constructor(globalFlags, redrawOthers){//globalFlags, redrawOthers, data = globalFlags.data){
-        //this.globalFlags = globalFlags;
         this.redrawOthers = redrawOthers;
-        //this.data = data;
         this.gross=globalFlags.grossing
-        //this.movies=movies;
         this.combined=globalFlags.combined; 
-                                                            //1236005118
+        this.setup()                                                    //1236005118
         this.filteredData=this.combined.filter(d=>parseFloat(d["World Sales (in $)"])<1650000000)
         let that=this
         document.getElementById("start").addEventListener('change', (e,d)=>{
@@ -28,119 +25,182 @@ class BubbleChart{
             that.draw()
         });
         
-       
-        this.size=d3.scaleLinear().domain([d3.min(this.filteredData.map(d=>parseInt(d["score"]))), d3.max(this.filteredData.map(d=>parseInt(d["score"])))]).range([2,10])
+       //let min= this.filteredData.filter(d=>parseInt(d["score"])<8?parseInt(d["score"]):parseInt(d["score"])+5 )
+       //console.log(min) 
+       this.size=  d3.scaleLinear()
+        .domain([d3.min(this.filteredData.map(d=>parseInt(d["score"]))),8.5,d3.max(this.filteredData.map(d=>parseInt(d["score"])))]).range([1,8.5,15])
         let numNodes = this.gross.length;
         let genre=['Action', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Horror', 'Comedy', 'Biography', 'Mystery', 'Fantasy',
-        'Romance'] // removed the family because it had only 1
+        'Crime', 'Horror', 'Comedy', 'Biography'] // removed the family because it had only 1, 'Mystery', 'Fantasy','Romance'
         this.colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
     
     }
-    
+    setup () {
+        // adding Event listeners
+        let that=this
+          let activities = document.getElementById("type");
+          activities.addEventListener("change", (e,d)=>{
+            if (d3.select('#type').property('value')==="scatter"){
+                that.removeBeeswarm();
+                that.drawScatter();
+            }
+            else{
+                d3.selectAll(".scatterclass").remove()
+                d3.selectAll(".xScatter").remove()
+                d3.selectAll(".yScatter").remove()
+                that.draw()
 
+            }
+
+          });
+        
+        }
+
+
+    removeBeeswarm(){
+        d3.selectAll(".bubble").remove()
+        d3.selectAll(".axes").remove()
+        d3.selectAll(".beeslabels").remove()
+        d3.selectAll(".beeslegend").remove()
+    }
+    
     //draw function for this chart. do not call drawAll from here.
     draw(){
-
-       this.addLegend()
-       let minimum=(d3.min(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
-       let maximum=(d3.max(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
-        //console.log(minimum) 
-        //console.log(maximum)                              //+1.55*10**2
-        let xScale = d3.scaleLinear().domain([minimum, maximum]).range([150,2000])
-        let xAxis = d3.axisBottom().scale(xScale);
-        let bubbleSvg= d3.select(".bubbleChart")
-            .attr ("width", 2500)
-            .attr ("height",500)
-        bubbleSvg.append("g")
-            .attr("class","axes")
-            .attr("transform",  `translate(0,450)`).call(xAxis)
+        let margin = {top: 10, right: 30, bottom: 30, left: 50},
+        width = 1500 - margin.left - margin.right,
+        height = 450 - margin.top - margin.bottom;
         
-      let nodeData=this.filteredData
-        var simulation = d3.forceSimulation(nodeData)
+        this.addLegend()
+        let minimum=(d3.min(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
+        let maximum=(d3.max(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
+                             //+1.55*10**2
+        let xScale = d3.scaleLinear().domain([0, maximum]).range([margin.left,width]).nice()
+        let xAxis = d3.axisBottom().scale(xScale);
+
+        let bubbleSvg=d3.select(".bubbleChart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+        
+        bubbleSvg
+            .append("g")
+            .attr("class","axes")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+        
+        
+        let nodeData=this.filteredData
+        let simulation = d3.forceSimulation(nodeData)
             .force('charge', d3.forceManyBody().strength(1))
             .force('x', d3.forceX().x(function(d) {
                 return (xScale(parseInt(d["World Sales (in $)"])/10**6));
             }))
-            .force('y', d3.forceY(400 / 2))
+            .force('y', d3.forceY(450 / 2))
             .force('collision', d3.forceCollide().radius(function(d) {
                 return parseFloat(d.score);
             }));
 
-    let node=d3.select(".bubbleChart")
+        let node=d3.select(".bubbleChart")
             .selectAll(".bubble")
             .data(nodeData)
             .join("circle")
             .attr("class","bubble")
-            .attr("r",d=> d.score)
+            .attr("transform", `translate(${2*margin.left},0)`)
+            .attr("r",d=>(d.score) > 0 ? this.size (d.score):0)//???????????????? for now replaced the nan with 0
             .attr("cx",d=>(parseInt(d["World Sales (in $)"])/10**6))
             .attr("cy",500/2)
-            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",0.9)
+            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",1)
             .on('tick', ticked);
-            //.call(d3.drag()
-            //.on("start",dragstarted)
-            //.on("drag",dragged)
-            //.on("end",dragended));
- 
- /*function dragstarted(d)
- { 
-    simulation.restart();
-    simulation.alpha(1.0);
-    d.fx = d.x;
-    d.fy = d.y;
- }
+           
+        function ticked(){
+            node.attr("cx", function(d){ return d.x;})
+                .attr("cy", function(d){ return d.y;})
+        }
 
- function dragged(d)
- {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
- }
-
- function dragended(d)
- {
-    d.fx = null;
-    d.fy = null;
-    simulation.alphaTarget(0.1);
- }*/
-
-    function ticked(){
-        node.attr("cx", function(d){ return d.x;})
-            .attr("cy", function(d){ return d.y;})
-    }
-
-    simulation.on("tick",ticked)
+        simulation.on("tick",ticked)
 
         
-        }
+    }
     
     addLegend(){
-        let genre=['Action', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Horror', 'Comedy', 'Biography', 'Mystery', 'Fantasy',
-        'Romance']
+        let genre=['Horror', 'Drama', 'Animation',  'Adventure',
+        'Crime', 'Action', 'Comedy', 'Biography']// 'Mystery', 'Fantasy','Romance'
         let size=10
-        d3.select(".bubbleChart").selectAll("mydots")
+        d3.select(".bubbleChart").selectAll(".beeslegend")
             .data(genre)
-            .enter()
-            .append("rect")
-            .attr("x", 30)
+            .join("rect")
+            .attr("class","beeslegend")
+            .attr("x", 20)
             .attr("y", function(d,i){ return 100 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
             .attr("width", size)
             .attr("height", size)
             .style("fill", d=>  this.colormap(d))
 
 // Add one dot in the legend for each name.
-        d3.select(".bubbleChart").selectAll("mylabels")
+        d3.select(".bubbleChart").selectAll(".beeslabels")
             .data(genre)
-            .enter()
-            .append("text")
-            .attr("x", 30 + size*1.2)
+            .join("text")
+            .attr("class","beeslabels")
+            .attr("x", 20 + size*1.2)
             .attr("y", function(d,i){ return 100 + i*(size+5) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
             .style("fill", d =>  this.colormap(d))
             .text(d =>  d)
             .attr("text-anchor", "left")
             .style("alignment-baseline", "middle")
-
-
-
         }
+
+        
+        
+
+
+    drawScatter(xFeature="World Sales (in $)", yFeature="score") {
+        let margin = {top: 20, right: 40, bottom: 20, left: 50},
+        width = 1200 - margin.left - margin.right,
+        height = 450 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+        let svg = d3.select(".bubbleChart")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+  // Add X axis
+        let x = d3.scaleLinear()
+            .domain([d3.min(this.combined, d=>parseFloat(d[xFeature])), d3.max(this.combined, d=>parseFloat(d[xFeature]))])
+            .range([ 0, width ]).nice();
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class","xScatter")
+            .call(d3.axisBottom(x));
+
+  // Add Y axis
+        let y = d3.scaleLinear()
+            .domain([d3.min(this.combined, d=>parseFloat(d[yFeature])), d3.max(this.combined, d=>parseFloat(d[yFeature]))])
+            .range([ height, 0]).nice();
+        svg.append("g")
+            .attr("class","yScatter")
+            .call(d3.axisLeft(y));
+        let z = d3.scaleLinear()
+            .domain([d3.min(this.combined, d=>parseFloat(d[yFeature])), d3.max(this.combined, d=>parseFloat(d[yFeature]))])
+            .range([ 1, 5])
+  // Add dots
+        svg.append('g')
+            .selectAll(".scatterclass")
+            .data(this.combined)
+            .join("circle")
+            .attr("class","scatterclass")
+            .attr("cx", function (d) { return x(d[xFeature]); } )
+            .attr("cy", function (d) { return y(d[yFeature]); } )
+            .attr("r",function (d) { return z(d[yFeature])})
+            //.attr("transform", `translate(0, ${- margin.top - margin.bottom})`)
+            .style("fill", d => this.colormap(d.genre)).attr("opacity",0.8)
+
     }
+       
+            
+            
+
+}

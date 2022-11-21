@@ -27,7 +27,7 @@ class BarChart{
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
-        console.log(this.globalFlags.combined);
+        //console.log(this.globalFlags.combined);
         
         rects.selectAll("rect").data(topThirty).join("rect").transition().attr("id", d => d["Title"]).attr("fill", "steelblue")
         .attr("x", (d, i) => {
@@ -95,7 +95,7 @@ class BarChart{
     registerListeners(){
         d3.select("#genreDropdown").on("click", e => {
             this.genreSelected = e.target.value;
-            console.log(e.target.value);
+            //console.log(e.target.value);
             this.drawRects();
         });
     }

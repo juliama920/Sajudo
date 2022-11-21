@@ -15,14 +15,25 @@ Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPa
     let lineChart = new LineChart(globalFlags, redrawOthers);
     let streamChart = new StreamChart(globalFlags, redrawOthers);
     let table = new Table(globalFlags, redrawOthers);
+    let infoTable = new Info(globalFlags, redrawOthers);
+
+    globalFlags.barChart = barChart;
+    globalFlags.bubbleChart = bubbleChart;
+    globalFlags.lineChart = lineChart;
+    globalFlags.streamChart = streamChart;
+    globalFlags.table = table;
+    globalFlags.infoTable = infoTable;
+
+    globalFlags.selectedMovie = null;
+    globalFlags.selectedDistributor = null;
 
     // console.log(streamChart instanceof StreamChart);
-    drawAll(barChart, bubbleChart, lineChart, streamChart, table);
+    drawAll(barChart, bubbleChart, lineChart, streamChart, table, infoTable);
 });
 
 
 //Run draw functions for every Vis
-function drawAll(barChart, bubbleChart, lineChart, streamChart, table){
+function drawAll(barChart, bubbleChart, lineChart, streamChart, table,infoTable){
     // console.log("drawing All");
 
     barChart.draw();
@@ -30,44 +41,58 @@ function drawAll(barChart, bubbleChart, lineChart, streamChart, table){
     lineChart.draw();
     streamChart.draw();
     table.draw();
+    infoTable.drawTable();
 }
 
 function redrawOthers(objectCalledFrom){
-    // console.log("calling redrawOthers");
+    console.log("calling redrawOthers");
     if(objectCalledFrom instanceof BarChart) {
-        bubbleChart.draw();
-        lineChart.draw();
-        streamChart.draw();
-        table.draw();
+        globalFlags.lineChart.draw();
+        globalFlags.streamChart.draw();
+        globalFlags.table.draw();
+        globalFlags.bubbleChart.draw();
+        globalFlags.infoTable.drawTable();
     }
 
     if(objectCalledFrom instanceof BubbleChart) {
-        barChart.draw();
-        lineChart.draw();
-        streamChart.draw();
-        table.draw();
+        globalFlags.lineChart.draw();
+        globalFlags.streamChart.draw();
+        globalFlags.table.draw();
+        globalFlags.barChart.draw();
+        globalFlags.infoTable.drawTable();
     }
 
     if(objectCalledFrom instanceof LineChart){
-        streamChart.draw();
-        table.draw();
-        barChart.draw();
-        bubbleChart.draw();
+        globalFlags.streamChart.draw();
+        globalFlags.table.draw();
+        globalFlags.barChart.draw();
+        globalFlags.bubbleChart.draw();
+        globalFlags.infoTable.drawTable();
     }
 
     if(objectCalledFrom instanceof StreamChart){
         // console.log("called from StreamChart");
-        table.draw();
-        barChart.draw();
-        bubbleChart.draw();
-        lineChart.draw();
+        globalFlags.lineChart.draw();
+        globalFlags.table.draw();
+        globalFlags.barChart.draw();
+        globalFlags.bubbleChart.draw();
+        globalFlags.infoTable.drawTable();
     }
 
     if(objectCalledFrom instanceof Table){
-        barChart.draw();
-        bubbleChart.draw();
-        lineChart.draw();
-        streamChart.draw();
+        globalFlags.lineChart.draw();
+        globalFlags.streamChart.draw();
+        globalFlags.barChart.draw();
+        globalFlags.bubbleChart.draw();
+        globalFlags.infoTable.drawTable();
+    }
+
+    if(objectCalledFrom instanceof Info){
+        globalFlags.lineChart.draw();
+        globalFlags.streamChart.draw();
+        globalFlags.table.draw();
+        globalFlags.barChart.draw();
+        globalFlags.bubbleChart.draw();
     }
 }
 
