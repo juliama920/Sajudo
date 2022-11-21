@@ -1,5 +1,7 @@
 //attributes
-let globalFlags = {};
+let globalFlags = {
+    tooltipValues: {}
+};
 
 let movieCSVPath = "../../data/movies(1986-2016).csv";
 let grossingCSVPath = "../../data/Highest Holywood Grossing Movies.csv";
@@ -16,6 +18,7 @@ Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPa
     let streamChart = new StreamChart(globalFlags, redrawOthers);
     let table = new Table(globalFlags, redrawOthers);
     let infoTable = new Info(globalFlags, redrawOthers);
+    let toolTip = new Tooltip(globalFlags);
 
     globalFlags.barChart = barChart;
     globalFlags.bubbleChart = bubbleChart;
@@ -23,6 +26,7 @@ Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPa
     globalFlags.streamChart = streamChart;
     globalFlags.table = table;
     globalFlags.infoTable = infoTable;
+    globalFlags.toolTip = toolTip;
 
     globalFlags.selectedMovie = null;
     globalFlags.selectedDistributor = null;
