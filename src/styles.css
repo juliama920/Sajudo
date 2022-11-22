@@ -60,12 +60,38 @@
     grid-row-end: 9;
 }
 
+path {
+    stroke: steelblue;
+}
+/* path:hover {
+    stroke: lightgray;
+} */
+path#hover {
+    stroke: lightgray;
+}
+path#click {
+    stroke: firebrick;
+}
+
 table, th, td, tr {
     border: 1px solid black;
     border-collapse: collapse;
 }
 td{
     width: 250px;
+}
+#table th {
+    text-align: center;
+}
+
+tr {
+    background-color: none;
+    color: black;
+}
+
+tr#highlight {
+    background-color: gray;
+    color: white;
 }
 
 .table-scroll {
@@ -189,13 +215,13 @@ td:last-of-type
     fill: steelblue;
 }
 
-td {
+/* td {
     padding-top: 0px;
     padding-bottom: 0px;
     padding-right: 5px;
     padding-left: 5px;
     color:black;
-}
+} */
 
 #predictionTable td {
     line-height: 0;

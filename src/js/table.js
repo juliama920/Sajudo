@@ -18,7 +18,9 @@ class Table{
         let rowSelection = d3.select('#tableBody')
             .selectAll('tr')
             .data(distributors.keys())
-            .join('tr');
+            .join('tr')
+            // .attr('class', (d) => d);
+            .attr('class', (d)=> d.replaceAll(' ', '').substring(0,5));
 
 
         let selection = rowSelection.selectAll('td')
@@ -43,40 +45,56 @@ class Table{
                     .join('td')
                     .text(dat => dat['Title']);
 
-                // movieRow.selectAll('td')
-                //     // .data((dat)=> dat)
-                //     .join('td')
-                //     .text(function(dat){
-                //         console.log(dat)
-                //         return dat['Title']
-                //     })
-                //     .attr('class', (dat) => dat);
+                d3.select('#tableBody')
+                    .select('#highlight')
+                    .attr('id', '');
 
-                // console.log(distributors.get(selected))
-                d3.select(this)
-                    .attr('bgcolor', 'steelblue');
-                // console.log(d3.select(this).attr('class'));
-                // this.toggleClass('active')
+                d3.select(this.parentElement)
+                    .attr('id','highlight');
+
+                thisH.data.selectedDistributor = this.className;
+                thisH.data.lineChart.draw();
             });
     }
 
-    // constructor(globalFlags, redrawOthers, data = globalFlags.grossing){
-    //     this.globalFlags = globalFlags;
-    //     this.redrawOthers = redrawOthers;
-    //     this.data = data;
-    // }
-
     //draw function for this chart. do not call drawAll from here.
     draw(){
-        console.log("drawing table");
-        if (this.data.selectedDistributor) {
-            console.log('in if statement');
-        }
         // console.log(this.data.selectedDistributor)
-        // console.log(this.globalFlags);
-        // if(this.globalFlags.test){
-        //     console.log("test is true!");
-        // }
-        // this.redrawOthers(this);
+        if (this.data.selectedDistributor) {
+            let selected = this.data.selectedDistributor;
+            let distributors = d3.group(this.data.grossing, (d)=> d['Distributor']);
+        // console.log((selected).replaceAll(' ', '').substring(0,5));
+
+            d3.select('#tableBody')
+                .select('#highlight')
+                .attr('id', '');
+                // .attr('highlight', null);
+
+            d3.select('#tableBody')
+                .select(`.${selected.replaceAll(' ', '').substring(0,5)}`)
+                .attr('id','highlight');
+
+
+            d3.select('.movieTable')
+                    .attr('hidden',null)
+                    .select('th')
+                    .text(selected);
+                
+            let movieRow = d3.select('.movieTable')
+                .select('#movieBody')
+                .selectAll('tr')
+                .data(distributors.get(selected))
+                .join('tr')
+                .attr('class', (dat) => dat['Title'])
+                .join('td')
+                .text(dat => dat['Title']);
+        } else {
+            d3.select('.movieTable')
+                    .attr('hidden','hidden');
+
+            d3.select('#tableBody')
+                .select('#highlight')
+                .attr('id', '');
+        }
     }
 }

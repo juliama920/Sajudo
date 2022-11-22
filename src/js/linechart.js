@@ -156,9 +156,14 @@ drawLines(xScale, yScale, data) {
         .selectAll('path')
         .data(distributors)
         .join('path')
+        .attr('class', (d)=> d[0].replaceAll(' ', '').substring(0,5))
+        // .attr('class', function(d) {
+            // console.log(d);
+            // return d;
+        // })
         .attr('fill', 'none')
         .attr('stroke', 'steelblue')
-        .attr('stroke-width', 1)
+        .attr('stroke-width', 3)
         .attr('d', ([group, values]) => d3.line()
             .x(function(d) {
                 let date = d['Title'].substr(-5).slice(0,-1);
@@ -172,23 +177,69 @@ drawLines(xScale, yScale, data) {
                     return yScale(d['salesAccum']);
             })(values))
         .on('mouseover', function() {
-            lines.attr('stroke', 'lightgrey');
+            if (d3.selectAll('#click').nodes().length > 0){
+
+                let holder = d3.selectAll('#click').nodes()[0];
+                if (this !== holder){
+                lines.attr('id', 'hover');
+                d3.select(holder).attr('id', 'click');
+                d3.select(this)
+                    .attr('id', '');
+                }
+            }
+            else {
+            lines.attr('id', 'hover');
             d3.select(this)
-                .attr('stroke', 'steelblue')
-                .attr('stroke-width', '3');
+                .attr('id', '');
+            }
+                // .attr('stroke', 'steelblue')
+                // .attr('stroke-width', 3);
         })
         .on('mouseout', function() {
-            lines.attr('stroke', 'steelblue')
-                .attr('stroke-width','1');
+            if (d3.selectAll('#click').nodes().length > 0){
+                let holder = d3.selectAll('#click').nodes()[0];
+                lines.attr('id', 'hover');
+                // console.log(holder);
+                d3.select(holder).attr('id', 'click');
+            } else {
+                lines.attr('id', '');
+            }
+
         })
-        .on('click', function(d) {
-            console.log(d.target.__data__[0])
-            hold.data.selectedDistributor = d.target.__data__[0];
+        .on('click', function(event) {
+            hold.data.selectedDistributor = event.target.__data__[0];
+            
+            lines.attr('id', 'hover');
+            // d3.selectAll('#click').attr('id', '');
+            d3.select(this)
+                .attr('id', 'click');
+                // .attr('stroke', 'firebrick');
+            
+
             hold.redrawOthers(hold);
         });
+    svg.on('click', function(event) {
+
+        if((event.path.length === 7)) {  // event is a svg object, reset linechart and table
+            // d3.selectAll('#click').attr('id', '');
+            lines.attr('id', '');
+            hold.data.selectedDistributor = null;
+            hold.data.table.draw();
+
+        }  
+    })
     lines.attr('transform', `translate(${80}, ${50})`);
 }
 
 draw(){
+    if (this.data.selectedDistributor) {
+        
+        let selected = this.data.selectedDistributor;
+        d3.selectAll('path')
+            .attr('id', 'hover');
+        d3.select(`.${selected.replaceAll(' ', '').substring(0,5)}`)
+            .attr('id', 'click');
+        
+    }
 }
 }
