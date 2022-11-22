@@ -3,6 +3,7 @@ class BubbleChart{
     constructor(globalFlags, redrawOthers){//globalFlags, redrawOthers, data = globalFlags.data){
         this.redrawOthers = redrawOthers;
         this.gross=globalFlags.grossing
+        this.globalFlags = globalFlags;
         this.combined=globalFlags.combined; 
         this.setup()                                                    //1236005118
         this.filteredData=this.combined.filter(d=>parseFloat(d["World Sales (in $)"])<1650000000)
@@ -53,6 +54,8 @@ class BubbleChart{
             }
 
           });
+
+          
         
         }
 
@@ -118,9 +121,21 @@ class BubbleChart{
             node.attr("cx", function(d){ return d.x;})
                 .attr("cy", function(d){ return d.y;})
         }
-
+        //console.log(globalFlags.combined)
+        let that=this
         simulation.on("tick",ticked)
 
+        d3.selectAll(".bubble").on("mousemove", (e,d) => {
+            //console.log(d)
+            if(e != that.e) {
+                that.globalFlags.tooltipValues.Movie = d.Title;
+                that.globalFlags.tooltipValues.Genre = d.genre;
+                that.globalFlags.tooltipValues.IMDbScore = d.score;
+
+            }
+            that.e = e;
+            that.globalFlags.toolTip.draw(e.x, e.y);
+        });
         
     }
     
