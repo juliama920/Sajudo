@@ -66,7 +66,7 @@ class BubbleChart{
     
     //draw function for this chart. do not call drawAll from here.
     draw(){
-        let margin = {top: 10, right: 30, bottom: 30, left: 50},
+        let margin = {top: 10, right: 50, bottom: 30, left: 50},
         width = 1500 - margin.left - margin.right,
         height = 450 - margin.top - margin.bottom;
         
