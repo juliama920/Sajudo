@@ -16,18 +16,17 @@ class BubbleChart{
             that.filteredData=that.combined.filter(d=>parseFloat(d["World Sales (in $)"])<parseInt(x)*10**6)
             that.draw()
         });
-
-        document.getElementById("companey").addEventListener('change', (e,d)=>{
+        /*document.getElementById("companey").addEventListener('change', (e,d)=>{
             //console.log(e.targer.value)
             d3.selectAll(".bubble").remove()
             d3.selectAll(".axes").remove()
-            let x=document.getElementById("companey").value
+            let x= that.globalFlags.selectedDistributor//document.getElementById("companey").value
+            
             that.filteredData=that.combined.filter(d=>d["Distributor"]===x) 
             that.draw()
-        });
+        });*/
         
-       //let min= this.filteredData.filter(d=>parseInt(d["score"])<8?parseInt(d["score"]):parseInt(d["score"])+5 )
-       //console.log(min) 
+ 
         this.size=  d3.scaleLinear()
             .domain([d3.min(this.filteredData.map(d=>parseInt(d["score"]))),8.5,d3.max(this.filteredData.map(d=>parseInt(d["score"])))]).range([1,8.5,14])
         //let numNodes = this.gross.length;
@@ -66,10 +65,16 @@ class BubbleChart{
     //draw function for this chart. do not call drawAll from here.
     draw(){
         let margin = {top: 10, right: 50, bottom: 30, left: 50},
-        width = 1500 - margin.left - margin.right,
+        width = 1400 - margin.left - margin.right,
         height = 450 - margin.top - margin.bottom;
         
         this.addLegend()
+        //console.log("distributor",globalFlags.selectedDistributor)
+        if ((globalFlags.selectedDistributor)!=null){
+            d3.selectAll(".axes").remove()
+            this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        }
+        //console.log(globalFlags.selectedDistributor)
         let minimum=(d3.min(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
         let maximum=(d3.max(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
                              //+1.55*10**2
@@ -80,8 +85,7 @@ class BubbleChart{
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
         
         bubbleSvg
             .append("g")
