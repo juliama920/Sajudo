@@ -41,7 +41,11 @@ function drawAll(barChart, bubbleChart, lineChart, streamChart, table,infoTable)
     // console.log("drawing All");
 
     barChart.draw();
-    bubbleChart.draw();
+    if(d3.select('#type').property('value')==="scatter"){
+        bubbleChart.drawScatter();
+    }
+    else{ bubbleChart.draw(); }
+    
     lineChart.draw();
     streamChart.draw();
     table.draw();
@@ -54,7 +58,12 @@ function redrawOthers(objectCalledFrom){
         globalFlags.lineChart.draw();
         globalFlags.streamChart.draw();
         globalFlags.table.draw();
-        globalFlags.bubbleChart.draw();
+        if(d3.select('#type').property('value')==="scatter"){
+            globalFlags.bubbleChart.drawScatter();
+    
+        }
+        else{ globalFlags.bubbleChart.draw(); }
+        //globalFlags.bubbleChart.draw();
         globalFlags.infoTable.drawTable();
     }
 
@@ -70,7 +79,12 @@ function redrawOthers(objectCalledFrom){
         globalFlags.streamChart.draw();
         globalFlags.table.draw();
         globalFlags.barChart.draw();
-        globalFlags.bubbleChart.draw();
+        if(d3.select('#type').property('value')==="scatter"){
+            globalFlags.bubbleChart.removeScatter()
+            globalFlags.bubbleChart.drawScatter();
+    
+        }
+        else{ globalFlags.bubbleChart.draw(); }
         globalFlags.infoTable.drawTable();
     }
 
@@ -79,7 +93,13 @@ function redrawOthers(objectCalledFrom){
         globalFlags.lineChart.draw();
         globalFlags.table.draw();
         globalFlags.barChart.draw();
-        globalFlags.bubbleChart.draw();
+        if(d3.select('#type').property('value')==="scatter"){
+            globalFlags.bubbleChart.removeScatter()
+            globalFlags.bubbleChart.drawScatter();
+    
+        }
+        else{ globalFlags.bubbleChart.draw(); }
+        globalFlags.infoTable.drawTable();
         globalFlags.infoTable.drawTable();
     }
 
@@ -87,7 +107,13 @@ function redrawOthers(objectCalledFrom){
         globalFlags.lineChart.draw();
         globalFlags.streamChart.draw();
         globalFlags.barChart.draw();
-        globalFlags.bubbleChart.draw();
+        if(d3.select('#type').property('value')==="scatter"){
+            globalFlags.bubbleChart.removeScatter()
+            globalFlags.bubbleChart.drawScatter();
+    
+        }
+        else{ globalFlags.bubbleChart.draw(); }
+        globalFlags.infoTable.drawTable();
         globalFlags.infoTable.drawTable();
     }
 
@@ -96,7 +122,13 @@ function redrawOthers(objectCalledFrom){
         globalFlags.streamChart.draw();
         globalFlags.table.draw();
         globalFlags.barChart.draw();
-        globalFlags.bubbleChart.draw();
+        if(d3.select('#type').property('value')==="scatter"){
+            globalFlags.bubbleChart.removeScatter()
+            globalFlags.bubbleChart.drawScatter();
+    
+        }
+        else{ globalFlags.bubbleChart.draw(); }
+        globalFlags.infoTable.drawTable();
     }
 }
 

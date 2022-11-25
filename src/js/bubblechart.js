@@ -41,10 +41,11 @@ class BubbleChart{
         let activities = document.getElementById("type");
         activities.addEventListener("change", (e,d)=>{
             if (d3.select('#type').property('value')==="scatter"){
+                that.removeScatter();
                 that.removeBeeswarm();
                 that.drawScatter();
             }
-            else{
+            else{//drawing bubbleplot
                 d3.selectAll(".scatterclass").remove()
                 d3.selectAll(".xScatter").remove()
                 d3.selectAll(".yScatter").remove()
@@ -61,6 +62,12 @@ class BubbleChart{
         d3.selectAll(".beeslabels").remove()
         d3.selectAll(".beeslegend").remove()
     }
+    removeScatter(){
+        d3.selectAll(".scatterclass").remove()
+        d3.selectAll(".yScatter").remove()
+        d3.selectAll(".xScatter").remove()
+        //d3.selectAll(".beeslegend").remove()
+    }
     
     //draw function for this chart. do not call drawAll from here.
     draw(){
@@ -75,8 +82,8 @@ class BubbleChart{
             this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
         }
         //console.log(globalFlags.selectedDistributor)
-        let minimum=(d3.min(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
-        let maximum=(d3.max(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))/10**6
+        let minimum=(d3.min(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))
+        let maximum=(d3.max(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))
                              //+1.55*10**2
         let xScale = d3.scaleLinear().domain([0, maximum]).range([margin.left,width]).nice()
         let xAxis = d3.axisBottom().scale(xScale);
@@ -98,7 +105,7 @@ class BubbleChart{
         let simulation = d3.forceSimulation(nodeData)
             .force('charge', d3.forceManyBody().strength(1))
             .force('x', d3.forceX().x(function(d) {
-                return (xScale(parseInt(d["World Sales (in $)"])/10**6));
+                return (xScale(parseInt(d["World Sales (in $)"])));
             }))
             .force('y', d3.forceY(450 / 2))
             .force('collision', d3.forceCollide().radius(function(d) {
@@ -112,7 +119,7 @@ class BubbleChart{
             .attr("class","bubble")
             .attr("transform", `translate(${2*margin.left},0)`)
             .attr("r",d=>(d.score) > 0 ? this.size (d.score):0)//???????????????? for now replaced the nan with 0
-            .attr("cx",d=>(parseInt(d["World Sales (in $)"])/10**6))
+            .attr("cx",d=>(parseInt(d["World Sales (in $)"])))
             .attr("cy",500/2)
             .attr("fill",d=> this.colormap (d.genre)).attr("opacity",1)
             .attr("stroke","black")
@@ -177,6 +184,11 @@ class BubbleChart{
         width = 1200 - margin.left - margin.right,
         height = 450 - margin.top - margin.bottom;
 
+        if ((globalFlags.selectedDistributor)!=null){
+            //d3.selectAll(".axes").remove()
+            this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        }
+        
 // append the svg object to the body of the page
         let svg = d3.select(".bubbleChart")
             .attr("width", width + margin.left + margin.right)
@@ -186,7 +198,7 @@ class BubbleChart{
                 "translate(" + margin.left + "," + margin.top + ")");
   // Add X axis
         let x = d3.scaleLinear()
-            .domain([d3.min(this.combined, d=>parseFloat(d[xFeature])), d3.max(this.combined, d=>parseFloat(d[xFeature]))])
+            .domain([d3.min(this.filteredData, d=>parseFloat(d[xFeature])), d3.max(this.filteredData, d=>parseFloat(d[xFeature]))])
             .range([ 0, width ]).nice();
         svg.append("g")
             .attr("transform", "translate(0," + height + ")")
@@ -195,18 +207,18 @@ class BubbleChart{
 
   // Add Y axis
         let y = d3.scaleLinear()
-            .domain([d3.min(this.combined, d=>parseFloat(d[yFeature])), d3.max(this.combined, d=>parseFloat(d[yFeature]))])
+            .domain([d3.min(this.filteredData, d=>parseFloat(d[yFeature])), d3.max(this.filteredData, d=>parseFloat(d[yFeature]))])
             .range([ height, 0]).nice();
         svg.append("g")
             .attr("class","yScatter")
             .call(d3.axisLeft(y));
         let z = d3.scaleLinear()
-            .domain([d3.min(this.combined, d=>parseFloat(d[yFeature])), d3.max(this.combined, d=>parseFloat(d[yFeature]))])
+            .domain([d3.min(this.filteredData, d=>parseFloat(d[yFeature])), d3.max(this.filteredData, d=>parseFloat(d[yFeature]))])
             .range([ 1, 5])
   // Add dots
         svg.append('g')
             .selectAll(".scatterclass")
-            .data(this.combined)
+            .data(this.filteredData)
             .join("circle")
             .attr("class","scatterclass")
             .attr("cx", function (d) { return x(d[xFeature]); } )
