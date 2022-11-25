@@ -65,7 +65,7 @@
       </div>
 
       <div id="bubbleChart">
-          Enter your max number to filter the data to smaller than your max (should be between 100-1600): <input type="text" value="" id="start"/><br><br>
+          Enter your max number to filter the data to smaller than your max (Movie revenues are between 100M and 2200M$): <input type="text" value="" id="start"/><br><br>
           Enter a companey name to filter the data to that companey: <input type="text" value="" id="companey"/>
           <span>
             <label>Bubble Plot type:</label>
@@ -74,30 +74,7 @@
               <option selected value="beeswarm">Beeswarm</option>
             </select>
           </span>
-          <span>
-            <label>xFeatures:</label>
-            <select id="xFeatures">
-              <option value="domesticSale">Domestic sale($)</option>
-              <option selected value="worldSale">World sale ($)</option>
-              <option value="internationalSale">International sale ($)</option>
-              <option value="runTime">Run time</option>
-              <option value="imdbScore">IMDb score</option>
-              <option value="votes">Votes</option>
-              <option value="budget">Budger</option>
-            </select>
-          </span>
-          <span>
-            <label>yFeatures</label>
-            <select id="xFeatures">
-            <option value="domesticSale">Domestic sale($)</option>
-              <option selected value="imdbScore">IMDb score</option>
-              <option value="internationalSale">International sale ($)</option>
-              <option value="runTime">Run time</option>
-              <option value="worldSale">World sale ($)</option>
-              <option value="votes">Votes</option>
-              <option value="budget">Budger</option>
-            </select>
-          </span>
+        
           <svg class="bubbleChart" width="800" height="500"></svg>
       </div>
 

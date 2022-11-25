@@ -22,15 +22,15 @@ class BubbleChart{
             d3.selectAll(".bubble").remove()
             d3.selectAll(".axes").remove()
             let x=document.getElementById("companey").value
-            that.filteredData=that.combined.filter(d=>d["Distributor"]===x)
+            that.filteredData=that.combined.filter(d=>d["Distributor"]===x) 
             that.draw()
         });
         
        //let min= this.filteredData.filter(d=>parseInt(d["score"])<8?parseInt(d["score"]):parseInt(d["score"])+5 )
        //console.log(min) 
-       this.size=  d3.scaleLinear()
-        .domain([d3.min(this.filteredData.map(d=>parseInt(d["score"]))),8.5,d3.max(this.filteredData.map(d=>parseInt(d["score"])))]).range([1,8.5,15])
-        let numNodes = this.gross.length;
+        this.size=  d3.scaleLinear()
+            .domain([d3.min(this.filteredData.map(d=>parseInt(d["score"]))),8.5,d3.max(this.filteredData.map(d=>parseInt(d["score"])))]).range([1,8.5,14])
+        //let numNodes = this.gross.length;
         let genre=['Action', 'Drama', 'Animation',  'Adventure',
         'Crime', 'Horror', 'Comedy', 'Biography'] // removed the family because it had only 1, 'Mystery', 'Fantasy','Romance'
         this.colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
@@ -39,8 +39,8 @@ class BubbleChart{
     setup () {
         // adding Event listeners
         let that=this
-          let activities = document.getElementById("type");
-          activities.addEventListener("change", (e,d)=>{
+        let activities = document.getElementById("type");
+        activities.addEventListener("change", (e,d)=>{
             if (d3.select('#type').property('value')==="scatter"){
                 that.removeBeeswarm();
                 that.drawScatter();
@@ -50,14 +50,10 @@ class BubbleChart{
                 d3.selectAll(".xScatter").remove()
                 d3.selectAll(".yScatter").remove()
                 that.draw()
-
             }
+        });
 
-          });
-
-          
-        
-        }
+    }
 
 
     removeBeeswarm(){
@@ -115,6 +111,8 @@ class BubbleChart{
             .attr("cx",d=>(parseInt(d["World Sales (in $)"])/10**6))
             .attr("cy",500/2)
             .attr("fill",d=> this.colormap (d.genre)).attr("opacity",1)
+            .attr("stroke","black")
+            .attr("stroke-width","0.5")
             .on('tick', ticked);
            
         function ticked(){

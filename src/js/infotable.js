@@ -64,8 +64,6 @@ class Info{
         });*/
         let categories=['Action', 'Drama', 'Animation',  'Adventure',
         'Crime', 'Horror', 'Comedy', 'Biography','Mystery', 'Fantasy','Romance','Family']
-        //this.colormap=d3.scaleOrdinal().domain(categories).range(d3.schemeCategory10)
-        //console.log(d3.min(this.combined.map(d=>parseFloat(d["score"]))))
         
         this.colormap=d3.scaleSequential(d3.interpolateRdBu).domain([d3.min(this.combined.map(d=>parseFloat(d["score"])))/10,d3.max(this.combined.map(d=>parseFloat(d["score"])))/10])//.range(['red','white','blue']);
         //console.log("1",this.colormap(d3.min(this.combined.map(d=>parseFloat(d["score"])))/10))
