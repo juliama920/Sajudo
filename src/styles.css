@@ -1,6 +1,6 @@
 #content {
     display: grid;
-    grid-template-columns: 375px 375px 210px 375px;
+    grid-template-columns: 375px 375px 100px 375px;
     grid-auto-rows: 250px;
     grid-gap: 20px;
 }
@@ -71,6 +71,16 @@ path#hover {
 }
 path#click {
     stroke: firebrick;
+}
+
+circle#unselected{
+    fill: white;
+    stroke: black;
+}
+
+circle#selected {
+    fill: steelblue;
+    stroke: black;
 }
 
 table, th, td, tr {
