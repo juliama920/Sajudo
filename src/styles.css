@@ -87,6 +87,14 @@ table, th, td, tr {
     border: 1px solid black;
     border-collapse: collapse;
 }
+.table th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.movieTable th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
 td{
     width: 250px;
 }
@@ -140,7 +148,13 @@ tr.active{
     background: steelblue;
 }
 
-table {
+.table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    font: 14px sans-serif;
+}
+.movieTable {
+    border: 1px solid black;
     border-collapse: collapse;
     font: 14px sans-serif;
 }
@@ -273,4 +287,7 @@ header {
     padding: 0.5em;
     text-align: center;
     height: 100px;
+}
+.table2 , th, tr, td {
+    border:none;
 }
