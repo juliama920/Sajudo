@@ -64,7 +64,7 @@ class Table{
 
                         d3.select(this)
                             .attr('id','highlight');
-                        thisH.data.selectedMovie = this.className;
+                        thisH.data.selectedMovie = this.textContent;
                         thisH.redrawOthers(thisH);
                     });
                 
@@ -78,7 +78,7 @@ class Table{
 
                 thisH.data.selectedDistributor = this.className;
                 thisH.data.selectedMovie = null;
-                thisH.data.lineChart.draw();
+                thisH.redrawOthers(thisH)
             });
     }
 
