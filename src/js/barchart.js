@@ -13,8 +13,8 @@ class BarChart{
 
         this.createBarChart();
         this.createDropdown();
-        this.drawRects();
         this.registerListeners();
+        this.drawRects();
     }
 
     drawRects(){
@@ -97,20 +97,6 @@ class BarChart{
             this.genreSelected = e.target.value;
             //console.log(e.target.value);
             this.drawRects();
-            this.registerListeners();
-        });
-
-        d3.select(".barChart").select("#rects").on("mouseover", e => {
-            if(e != this.e) {
-                this.globalFlags.tooltipValues.Movie = e.target.id;
-            }
-            this.e = e;
-        });
-
-        this.globalFlags.tooltipValues.Genre = this.genreSelected;
-
-        d3.select(".barChart").on("mousemove", e => {
-            this.globalFlags.toolTip.draw(e.x, e.y);
         });
     }
 

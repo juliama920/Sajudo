@@ -18,7 +18,6 @@ class Tooltip{
         let tooltipSVG = d3.select("#toolTip").select("svg");
         let i = 0;
         for(let key of Array.from(Object.keys(this.globalFlags.tooltipValues))){
-            console.log(key);
             tooltipSVG.append("text").text(key + " : " + this.globalFlags.tooltipValues[key]).attr("transform",
             `translate(20, ${25*i + 25})`);
             i++;
