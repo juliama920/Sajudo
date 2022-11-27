@@ -156,7 +156,8 @@ table {
     position: absolute;
     z-index: 1;
   }
-circle:hover{
+  
+  .bubble:hover{
     stroke-width: 3;
 }
 .tooltip:hover  {

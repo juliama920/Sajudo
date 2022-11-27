@@ -100,7 +100,8 @@ class BarChart{
             this.registerListeners();
         });
 
-        d3.select(".barChart").select("#rects").on("mouseover", e => {
+        d3.select(".barChart").select("#rects").on("mouseover", (e,d) => {
+           // console.log(d)
             if(e != this.e) {
                 this.globalFlags.tooltipValues.Movie = e.target.id;
             }
