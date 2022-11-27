@@ -214,7 +214,7 @@ class BubbleChart{
             .call(d3.axisLeft(y));
         let z = d3.scaleLinear()
             .domain([d3.min(this.filteredData, d=>parseFloat(d[yFeature])), d3.max(this.filteredData, d=>parseFloat(d[yFeature]))])
-            .range([ 1, 5])
+            .range([2, 6])
   // Add dots
         svg.append('g')
             .selectAll(".scatterclass")
