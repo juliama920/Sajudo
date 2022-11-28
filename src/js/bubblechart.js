@@ -8,23 +8,7 @@ class BubbleChart{
         this.setup()                                                    //1236005118
         this.filteredData=this.combined.filter(d=>parseFloat(d["World Sales (in $)"])<1650000000)
         let that=this
-        document.getElementById("start").addEventListener('change', (e,d)=>{
-            //console.log(e.targer.value)
-            d3.selectAll(".bubble").remove()
-            d3.selectAll(".axes").remove()
-            let x=document.getElementById("start").value
-            that.filteredData=that.combined.filter(d=>parseFloat(d["World Sales (in $)"])<parseInt(x)*10**6)
-            that.draw()
-        });
-        /*document.getElementById("companey").addEventListener('change', (e,d)=>{
-            //console.log(e.targer.value)
-            d3.selectAll(".bubble").remove()
-            d3.selectAll(".axes").remove()
-            let x= that.globalFlags.selectedDistributor//document.getElementById("companey").value
-            
-            that.filteredData=that.combined.filter(d=>d["Distributor"]===x) 
-            that.draw()
-        });*/
+        
         
  
         this.size=  d3.scaleLinear()
@@ -46,9 +30,7 @@ class BubbleChart{
                 that.drawScatter();
             }
             else{//drawing bubbleplot
-                d3.selectAll(".scatterclass").remove()
-                d3.selectAll(".xScatter").remove()
-                d3.selectAll(".yScatter").remove()
+                that.removeScatter();
                 that.draw()
             }
         });
@@ -61,22 +43,25 @@ class BubbleChart{
         d3.selectAll(".axes").remove()
         d3.selectAll(".beeslabels").remove()
         d3.selectAll(".beeslegend").remove()
+        d3.selectAll(".bubbleText").remove()
     }
     removeScatter(){
         d3.selectAll(".scatterclass").remove()
         d3.selectAll(".yScatter").remove()
         d3.selectAll(".xScatter").remove()
-        //d3.selectAll(".beeslegend").remove()
+        d3.selectAll(".scatterText").remove()
     }
     
     //draw function for this chart. do not call drawAll from here.
     draw(){
-        let margin = {top: 10, right: 50, bottom: 30, left: 50},
+        d3.selectAll(".bubbleText").remove()
+        let margin = {top: 10, right: 50, bottom: 60, left: 50},
         width = 1400 - margin.left - margin.right,
         height = 450 - margin.top - margin.bottom;
         
         this.addLegend()
-        //console.log("distributor",globalFlags.selectedDistributor)
+        console.log(globalFlags.selectedMovie)
+        
         if ((globalFlags.selectedDistributor)!=null){
             d3.selectAll(".axes").remove()
             this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
@@ -117,11 +102,12 @@ class BubbleChart{
             .data(nodeData)
             .join("circle")
             .attr("class","bubble")
+            .attr("id",d => { return new String(d.Title)})
             .attr("transform", `translate(${2*margin.left},0)`)
             .attr("r",d=>(d.score) > 0 ? this.size (d.score):0)//???????????????? for now replaced the nan with 0
             .attr("cx",d=>(parseInt(d["World Sales (in $)"])))
             .attr("cy",500/2)
-            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",1)
+            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",0.9)
             .attr("stroke","black")
             .attr("stroke-width","0.5")
             .on('tick', ticked);
@@ -133,6 +119,15 @@ class BubbleChart{
         //console.log(globalFlags.combined)
         let that=this
         simulation.on("tick",ticked)
+        if(globalFlags.selectedMovie!=null){
+            //console.log(globalFlags.selectedMovie)
+            //d3.selectAll(".bubble").attr("fill","grey")
+            let circle=document.getElementById(globalFlags.selectedMovie)
+            
+            circle.setAttribute('stroke-width', 2)
+            .style.opacity="1"
+            //console.log(selectedCircle)
+        }
 
         d3.selectAll(".bubble").on("mousemove", (e,d) => {
             //console.log(d)
@@ -145,8 +140,10 @@ class BubbleChart{
             that.e = e;
             that.globalFlags.toolTip.draw(e.x, e.y);
         });
-        
+        this.axesText()  
     }
+
+    
     
     addLegend(){
         let genre=['Horror', 'Drama', 'Animation',  'Adventure',
@@ -175,12 +172,47 @@ class BubbleChart{
             .style("alignment-baseline", "middle")
         }
 
-        
+    axesText(){
+
+        let svg=d3.select(".bubbleChart")
+
+        if (d3.select('#type').property('value')==="scatter"){
+        svg
+            .append('text')
+            .attr('class', 'scatterText')
+            .text('IMDb Score')
+            .attr('transform', 'rotate(-90)')
+            .attr('x', -250)
+            .attr('y', 15)
+            .attr('fill', 'black')
+            .attr('font-size', '16px')
+            .attr('font-weight','bold');
+
+        svg.append('text')
+            .attr('class', 'scatterText')
+            .text('Movie Reveniue ($)')
+            .attr('transform', `translate(550,440)`)
+            .attr('fill', 'black')
+            .attr('font-size', '16px')
+            .attr('font-weight','bold');
+        } 
+        else{
+            svg.append('text')
+            .attr('class', 'bubbleText')
+            .text('Movie Reveniue ($)')
+            .attr('transform', `translate(700,440)`)
+            .attr('fill', 'black')
+            .attr('font-size', '16px')
+            .attr('font-weight','bold');
+
+        } 
+    }  
         
 
 
     drawScatter(xFeature="World Sales (in $)", yFeature="score") {
-        let margin = {top: 20, right: 40, bottom: 20, left: 50},
+        this.axesText()
+        let margin = {top: 20, right: 40, bottom: 50, left: 50},
         width = 1200 - margin.left - margin.right,
         height = 450 - margin.top - margin.bottom;
 
