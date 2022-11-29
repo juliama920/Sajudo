@@ -13,7 +13,7 @@ class BarChart{
 
         this.createBarChart();
         this.drawAxis();
-        this.createDropdown();
+        if(d3.select("#genreDropdown").empty()) this.createDropdown();
         this.registerListeners();
         this.drawRects();
     }
