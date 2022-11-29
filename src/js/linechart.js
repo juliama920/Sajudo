@@ -220,9 +220,9 @@ drawLines(xScale, yScale, data) {
                     return yScale(d['salesAccum']);
             })(values))
         .on('mouseover', function(e) {
-            for (const key in hold.data.tooltipValues) {
-                delete hold.data.tooltipValues[key];
-            }
+//             for (const key in hold.data.tooltipValues) {
+//                 delete hold.data.tooltipValues[key];
+//             }
 
             let className = (this.getAttribute('class'));
             distributors.forEach(function(d) {
@@ -232,7 +232,7 @@ drawLines(xScale, yScale, data) {
                     hold.data.tooltipValues.Distributor = (d[0]['Distributor']).toString();
             });
 
-            d3.select('#toolTip').attr('hidden', null);
+            // d3.select('#toolTip').attr('hidden', null);
             hold.data.toolTip.draw(e.x, e.y);
             // If Distributor is selected, don't change that path on mouseover
             if (d3.selectAll('#click').nodes().length > 0){ 
@@ -252,7 +252,7 @@ drawLines(xScale, yScale, data) {
         })
         .on('mouseout', function() {
             
-            d3.select('#toolTip').attr('hidden', 'hidden');
+            // d3.select('#toolTip').attr('hidden', 'hidden');
             // If Distributor is selected, don't change that path on mouseout
             if (d3.selectAll('#click').nodes().length > 0){
                 let holder = d3.selectAll('#click').nodes()[0];
