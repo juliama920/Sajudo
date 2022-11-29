@@ -12,6 +12,7 @@ class BarChart{
         this.genreRevenueMap = this.getGenreMap();
 
         this.createBarChart();
+        this.drawAxis();
         this.createDropdown();
         this.drawRects();
         this.registerListeners();
@@ -22,7 +23,7 @@ class BarChart{
 
         let rects = d3.select(".barChart").append("g").attr("id", "rects");
 
-        let topThirty = this.genreRevenueMap.get(this.genreSelected).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,40);
+        let topThirty = this.genreRevenueMap.get(this.genreSelected).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
 
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
@@ -40,17 +41,19 @@ class BarChart{
             }
             
             let x = this.xScale(parse(date));
-            return x + 80;
+            return x + 90 ;
         })
         .attr("y", (d, i) => {
-            return this.yScale(d["International Sales (in $)"]) - 30;
+            return height + 20 - this.yScale(d["International Sales (in $)"]);
+            return this.yScale(d["International Sales (in $)"]) + this.yScale(d["International Sales (in $)"]);
         })
         .attr("width", (d, i) => {
-            return 5;
+            return 8;
         })
         .attr("height", (d, i) => {
-            return 500 - this.yScale(d["International Sales (in $)"]);
-        });
+            return  this.yScale(d["International Sales (in $)"]);
+        })
+        .style('stroke', 'black');
     }
 
     createBarChart(){
@@ -61,52 +64,109 @@ class BarChart{
         // append the svg object to the body of the page
         const svg = d3.select(".barChart")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-            `translate(${margin.left}, ${margin.top})`);
+        .attr("height", height + margin.top + margin.bottom);
+        // .append("g")
+        // .attr("transform",
+            // `translate(${margin.left}, ${margin.top})`); 
+    }
+
             
+    drawAxis(){    
+        
+        const margin = {top: 20, right: 30, bottom: 30, left: 90},
+        width = 800 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+        
+        d3.select('.barChart').select('#axis').remove();
+
+        const svg = d3.select(".barChart")
+        .append("g")
+        .attr('id', 'axis')
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+        let topTwenty = this.genreRevenueMap.get(this.genreSelected).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
+// console.log(topTwenty);
         const keys = this.globalFlags.grossing.columns.slice(1);
 
         var parseTime = d3.timeParse("%B %d, %Y");
 
         // Add X axis
         this.xScale = d3.scaleTime()
-        .domain(d3.extent(this.globalFlags.grossing, function(d) { 
+        .domain(d3.extent(topTwenty, function(d) { 
             return parseTime(d["Release Date"]);
         }))
-        .range([ 0, width ]);
+        .range([ 0, width ])
+        .nice();
 
         svg.append("g")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(this.xScale).ticks(5));
+        .call(d3.axisBottom(this.xScale)
+        .tickFormat(d3.timeFormat('%Y')));
 
+
+        let max = (d3.max(topTwenty, function(d) { return +d["World Sales (in $)"];} ))
+        
         // Add Y axis
         this.yScale = d3.scaleLinear()
-        .domain(d3.extent(this.globalFlags.grossing, function(d) { 
-            return parseInt(d["World Sales (in $)"]);
-        }))
-        .range([ height, 0 ]);
+        .domain([0, max])
+        // .domain(d3.extent(this.globalFlags.grossing, function(d) { 
+        //     return parseInt(d["World Sales (in $)"]);
+        // }))
+        .range([ height, 0 ])
+        .nice();
 
         svg.append("g")
         .call(d3.axisLeft(this.yScale));
     }
 
     registerListeners(){
+        let hold = this;
         d3.select("#genreDropdown").on("click", e => {
             this.genreSelected = e.target.value;
-            //console.log(e.target.value);
+            this.drawAxis();
             this.drawRects();
             this.registerListeners();
         });
 
-        d3.select(".barChart").select("#rects").on("mouseover", (e,d) => {
-           // console.log(d)
+        let bars = d3.select(".barChart").select("#rects")
+        .on("mouseover", (e,d) => {
             if(e != this.e) {
                 this.globalFlags.tooltipValues.Movie = e.target.id;
             }
             this.e = e;
+            
+
+            if(d3.selectAll('.barClick').nodes().length > 0) {
+                let holder = d3.selectAll('.barClick').nodes()[0];
+                if (e.path[0] !== holder) {
+                    bars.selectAll('rect').attr('class', 'barHover');
+                    d3.select(holder).attr('class', 'barClick');
+                    d3.select(e.path[0]).attr('class', '');
+                }
+            }
+            else { 
+            bars.selectAll('rect').attr('class', 'barHover');
+            d3.select(e.path[0])
+                .attr('class', '');
+            }
+        })
+        .on('mouseout', function(e) {
+            hold.globalFlags.tooltipValues.Movie = null;
+
+            if (d3.selectAll('.barClick').nodes().length > 0) {
+                let holder = d3.selectAll('.barClick').nodes()[0];
+                bars.selectAll('rect').attr('class', 'barHover');
+                d3.select(holder).attr('class', 'barClick')
+            } else {
+                bars.selectAll('rect').attr('class', '');
+            }
+        })
+        .on('click', function(e) {
+            bars.selectAll('rect').attr('class', 'barHover');
+            d3.select(e.path[0]).attr('class', 'barClick');
         });
+
 
         this.globalFlags.tooltipValues.Genre = this.genreSelected;
 

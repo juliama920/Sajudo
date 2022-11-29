@@ -144,6 +144,18 @@ tr#highlight {
   }
 
 
+rect.barHover {
+    fill: lightgray;
+}
+rect.barClick {
+    fill: firebrick;
+}
+
+
+
+
+
+
 tr.active{
     background: steelblue;
 }
