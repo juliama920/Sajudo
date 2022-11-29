@@ -32,68 +32,42 @@ class StreamChart{
         .append("g")
         .attr("transform",
             `translate(${margin.left}, ${margin.top})`);
-
-        // Parse the Data
-
-        // List of groups = header of the csv files
-        //TODO: this needs to be genres
-        let that = this;
-
-        let grossingGenres = this.getAllGrossingGenres();
         
+        //get keys, this gets an array of the movies genres
         this.allMoviesGenres = this.getAllMovieGenres();
 
-        this.dateGenreRevMap = this.getTotalRevenueFromGenreByYear();
-    
-        const keys = this.allMoviesGenres;
-        let parseTime = d3.timeParse("%B %d, %Y");
+        //sorted Array by date attribute of objects containing genre and their contributions per date
+        let sortedData = this.getTotalRevenueFromGenreByYear();
 
         // Add X axis
         const x = d3.scaleTime()
         .domain(d3.extent(this.globalFlags.grossing, function(d) { 
-            return new Date(parseTime(d["Release Date"]));
-        }))
-        .range([ 0, width ]);
+            return new Date(d3.timeParse("%B %d, %Y")(d["Release Date"]));
+        })).range([ 0, width ]);
+
         svg.append("g")
         .attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(x).ticks(5));
 
-        let timeFormat = d3.timeFormat("%B %Y");
-        let parseTime2 = d3.timeParse("%B %Y");
-
-        let extent = d3.extent(this.globalFlags.grossing, function(d) { 
-            return parseInt(d["World Sales (in $)"]);
-        });
-        console.log(extent);
-        // Add Y axis
+        // yScale for how much money a genre contributed
         const y = d3.scaleLinear()
-        .domain(extent)
+        .domain(d3.extent(this.globalFlags.grossing, function(d) { 
+            return parseInt(d["World Sales (in $)"]);
+        }))
         .range([ height, 0 ]);
 
+        //Add y axis
         svg.append("g")
         .call(d3.axisLeft(y));
 
         // color palette
-        const color = d3.scaleOrdinal()
-        .domain(keys)
-        .range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf']);
+        const color = d3.scaleOrdinal().domain(this.allMoviesGenres).range(d3.schemeCategory10);
 
-        let sortedData = Array.from(this.dateGenreRevMap.values()).sort((a,b) => {
-            let date1 = new Date(a["date"]);
-            let date2 = new Date(b["date"]);
-
-            return date1 - date2;
-        });
-
-        console.log(sortedData);
-
-        //stack the data?
+        //stack the data
         const stackedData = d3.stack()
         .offset(d3.stackOffsetSilhouette)
-        .keys(keys).value((obj, key) => obj[key])
+        .keys(this.allMoviesGenres).value((obj, key) => obj[key])
         (sortedData);
-
-        console.log(stackedData);
 
         //Show the areas
         svg
@@ -101,7 +75,7 @@ class StreamChart{
         .data(stackedData)
         .join("path")
         .attr("transform",
-        `translate(100, -400)`)
+        `translate(10, -200)`)
         .style("stroke", "none")
         .style("fill", function(d) { 
             return color(d.key); })
@@ -147,15 +121,19 @@ class StreamChart{
             return this.getMonthYear(d["released"]);
         });
 
-        return groups;
+        return Array.from(groups.values()).sort((a,b) => {
+            return new Date(a["date"]) - new Date(b["date"]);
+        });
     }
 
     getMonthYear(date){
         //Format Time Column to get Month and Year
-        let parseTime = d3.timeParse("%B %d, %Y");
-        let timeFormat = d3.timeFormat("%B %Y");
-
-        return timeFormat(parseTime(date));
+        return d3.timeFormat("%B %Y")(d3.timeParse("%B %d, %Y")(date));
+    }
+        
+    //Format Time Column by Year
+    getYear(date){
+        return d3.timeFormat("%B %Y")(d3.timeParse("%B %d, %Y")(date));
     }
 
     //get total genre revenue by totaling each movie's(that has that genre) contribution
