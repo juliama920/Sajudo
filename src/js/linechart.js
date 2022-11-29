@@ -272,12 +272,15 @@ drawLines(xScale, yScale, data) {
             // d3.selectAll('#click').attr('id', '');
             lines.attr('id', '');
             hold.data.selectedDistributor = null;
-            hold.data.table.draw();
+            hold.data.selectedMovie = null;
+            hold.redrawOthers(hold);
 
             svg.select('#circles').remove();
+
         }  
     });
     lines.attr('transform', `translate(${80}, ${50})`);
+    this.draw();
 }
 
 drawCircles(xScale, yScale, data) {
