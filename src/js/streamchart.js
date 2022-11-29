@@ -39,26 +39,27 @@ class StreamChart{
         //sorted Array by date attribute of objects containing genre and their contributions per date
         let sortedData = this.getTotalRevenueFromGenreByYear();
 
+        sortedData = sortedData.slice(1, sortedData.length - 2);
+
+        console.log(sortedData);
+
         // Add X axis
         const x = d3.scaleTime()
-        .domain(d3.extent(this.globalFlags.grossing, function(d) { 
-            return new Date(d3.timeParse("%B %d, %Y")(d["Release Date"]));
-        })).range([ 0, width ]);
+        .domain([new Date("1969"), new Date("2020")]).range([ 0, width ]);
 
+        //add x axis
         svg.append("g")
         .attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(x).ticks(5));
 
         // yScale for how much money a genre contributed
         const y = d3.scaleLinear()
-        .domain(d3.extent(this.globalFlags.grossing, function(d) { 
-            return parseInt(d["World Sales (in $)"]);
-        }))
+        .domain([0, 60000000000])
         .range([ height, 0 ]);
 
-        //Add y axis
-        svg.append("g")
-        .call(d3.axisLeft(y));
+        // //Add y axis
+        // svg.append("g")
+        // .call(d3.axisLeft(y));
 
         // color palette
         const color = d3.scaleOrdinal().domain(this.allMoviesGenres).range(d3.schemeCategory10);
@@ -81,7 +82,7 @@ class StreamChart{
             return color(d.key); })
             .attr("d", d3.area()
             .x(function(d) {
-                let parseTime = d3.timeParse("%B %Y");
+                let parseTime = d3.timeParse("%Y");
                 return x(parseTime(d.data.date));
             })
             .y0(function(d) {
@@ -91,6 +92,11 @@ class StreamChart{
                 return y(d[1]); 
             })
         )
+    }
+
+    //add event listeners
+    registerEventListeners(){
+        
     }
 
     //Return Array containing all Genres that appear in grossing
@@ -116,9 +122,9 @@ class StreamChart{
         let groups = d3.rollup(this.globalFlags.combined, g => this.totalUpGenreRevenues(g), d=> {
             //Try and handle empty dates going into whichever month/year index
             if(d["Release Date"]){
-                return this.getMonthYear(d["Release Date"]);
+                return this.getYear(d["Release Date"]);
             }
-            return this.getMonthYear(d["released"]);
+            return this.getYear(d["released"]);
         });
 
         return Array.from(groups.values()).sort((a,b) => {
@@ -133,13 +139,13 @@ class StreamChart{
         
     //Format Time Column by Year
     getYear(date){
-        return d3.timeFormat("%B %Y")(d3.timeParse("%B %d, %Y")(date));
+        return d3.timeFormat("%Y")(d3.timeParse("%B %d, %Y")(date));
     }
 
     //get total genre revenue by totaling each movie's(that has that genre) contribution
     totalUpGenreRevenues(moviesFromMonthYear){
         let genreRevs = {};
-        genreRevs.date = this.getMonthYear(moviesFromMonthYear[0]["Release Date"]);
+        genreRevs.date = this.getYear(moviesFromMonthYear[0]["Release Date"]);
         for(let genre of this.allMoviesGenres){
             genreRevs[genre] = 0;
             for(let movie of moviesFromMonthYear){
