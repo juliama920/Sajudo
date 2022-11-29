@@ -107,7 +107,7 @@ class BubbleChart{
             .attr("r",d=>(d.score) > 0 ? this.size (d.score):0)//???????????????? for now replaced the nan with 0
             .attr("cx",d=>(parseInt(d["World Sales (in $)"])))
             .attr("cy",500/2)
-            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",0.9)
+            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",0.8)
             .attr("stroke","black")
             .attr("stroke-width","0.5")
             .on('tick', ticked);
@@ -124,8 +124,8 @@ class BubbleChart{
             //d3.selectAll(".bubble").attr("fill","grey")
             let circle=document.getElementById(globalFlags.selectedMovie)
             
-            circle.setAttribute('stroke-width', 2)
-            .style.opacity="1"
+            circle.setAttribute('stroke-width', 4)
+            
             //console.log(selectedCircle)
         }
 
@@ -253,11 +253,23 @@ class BubbleChart{
             .data(this.filteredData)
             .join("circle")
             .attr("class","scatterclass")
+            .attr ("id",d=>d.Title)
             .attr("cx", function (d) { return x(d[xFeature]); } )
             .attr("cy", function (d) { return y(d[yFeature]); } )
             .attr("r",function (d) { return z(d[yFeature])})
             //.attr("transform", `translate(0, ${- margin.top - margin.bottom})`)
             .style("fill", d => this.colormap(d.genre)).attr("opacity",0.8)
+
+
+        if(globalFlags.selectedMovie!=null){
+                //console.log(globalFlags.selectedMovie)
+                //d3.selectAll(".bubble").attr("fill","grey")
+                let circle=document.getElementById(globalFlags.selectedMovie)
+                circle.setAttribute('stroke',"black")
+                circle.setAttribute('stroke-width',4)
+                
+                //console.log(selectedCircle)
+            }
 
     }
        
