@@ -152,13 +152,12 @@ class BarChart{
 
         let bars = d3.select(".barChart").select("#rects")
         .on("mouseover", (e,d) => {
-            d3.select('#toolTip').attr('hidden', null);
+            // d3.select('#toolTip').attr('hidden', null);
             if(e != this.e) {
                 
                 this.globalFlags.tooltipValues.Genre = this.genreSelected;
                 this.globalFlags.tooltipValues.Movie = e.target.id;
-                
-                
+            
             }
             this.e = e;
             
@@ -178,7 +177,7 @@ class BarChart{
             }
         })
         .on('mouseout', function(e) {
-            d3.select('#toolTip').attr('hidden', 'hidden');
+            // d3.select('#toolTip').attr('hidden', 'hidden');
             // hold.globalFlags.tooltipValues.Movie = null;
 
             if (d3.selectAll('.barClick').nodes().length > 0) {
