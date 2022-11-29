@@ -64,9 +64,11 @@ class Info{
         });*/
         let categories=['Action', 'Drama', 'Animation',  'Adventure',
         'Crime', 'Horror', 'Comedy', 'Biography','Mystery', 'Fantasy','Romance','Family']
-        this.colormap=d3.scaleOrdinal().domain(categories).range(d3.schemeCategory10)
-
-
+        
+        this.colormap=d3.scaleSequential(d3.interpolateRdBu).domain([d3.min(this.combined.map(d=>parseFloat(d["score"])))/10,d3.max(this.combined.map(d=>parseFloat(d["score"])))/10])//.range(['red','white','blue']);
+        //console.log("1",this.colormap(d3.min(this.combined.map(d=>parseFloat(d["score"])))/10))
+        //console.log("2",this.colormap(d3.max(this.combined.map(d=>parseFloat(d["score"])))/10))
+        //this.colormap= d3.scaleDiverging().domain([d3.min(this.combined.map(d=>parseFloat(d["score"])))/10,5,d3.max(this.combined.map(d=>parseFloat(d["score"])))/10]).interpolator(d3.interpolateRdBu)
         this.attachSortHandlers();
         this.drawLegend();
 
@@ -86,7 +88,7 @@ class Info{
         .attr('x',this.vizWidth/2-30)
         .attr('y',15)
         .text("Title")
-        let textArray=["Writer","IMDbScore","Runtime(0.5Hr)","Budget(M$)","WorldSales(M$)"]
+        let textArray=["Writer","IMDbScore","Runtime(min)","Budget(M$)","WorldSales(M$)"]
         svgArray.forEach(element => { 
             d3.select(element)
             .attr("width",this.vizWidth)
@@ -144,12 +146,11 @@ class Info{
 
     
       this.addRectanglesFrequency(svgSelect.filter(d =>d.name==="score"));
-        //this.addRectanglesFrequency(svgSelect.filter(d =>d.name==="runtime"));
-       this.addRectanglesPercentage(svgSelect.filter(d =>d.name==="runTime"));
-       //this.addGridlinesPercentage(svgSelect.filter(d=>d.name==="percentage"), [0]);
+       //this.addRectanglesPercentage(svgSelect.filter(d =>d.name==="runTime"));
     }
 
     rowToCellDataTransform(d) {
+        const format=d3.format(".2f");
         let title = {
             type: 'text',
             name:'Title',
@@ -170,9 +171,9 @@ class Info{
         };
   
         let runtime = {
-            type: 'viz',
+            type: 'text',
             name: 'runTime',
-            value: d["RunTime2"]/30,
+            value: (d["RunTime2"]),
             
         };
         let budget = {
@@ -235,8 +236,9 @@ class Info{
          .attr("y", 0)
          .attr("height", 15)
          .attr("width",(d)=>this.scaleX2(d.value))
+         .attr("transform",  `translate(0,2.5)`)
          .attr("opacity", 0.9)
-         .attr("fill",d=>{return this.colormap(d.category)})
+         .attr("fill",d=>{return(this.colormap(parseFloat(d.value)/10));})
         
      }
 
@@ -252,11 +254,11 @@ class Info{
        .attr("x", (d) =>  this.scaleX3(0))
 
        .attr("y", 0)
-       .attr("transform",  `translate(${20},0)`)
+       .attr("transform",  `translate(${20},2.5)`)
        .attr("height", 15)
        .attr("width",(d)=>this.scaleX3(d.value))
        .attr("opacity", 0.9)
-       .attr("fill",d=>{return this.colormap(d.category)})
+       .attr("fill",d=>{return  this.colormap(parseFloat(d.score))/10})
     }
    
     attachSortHandlers() 
