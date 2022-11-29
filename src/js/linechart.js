@@ -22,6 +22,24 @@ constructor(globalFlags, redrawOthers) {
         .domain([new Date('1927'), new Date('2021')])
         .range([0, CHART_WIDTH- 100])
         .nice();
+
+    svg
+        .append('text')
+        // .attr('id', 'testText')
+        .text('Net Gross Income in Billions of Dollars')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -320)
+        .attr('y', 20)
+        .attr('fill', 'black')
+        .attr('font-size', '16px')
+        .attr('font-weight','bold');
+
+    svg.append('text')
+        .text('Time in Years')
+        .attr('transform', `translate(400,475)`)
+        .attr('fill', 'black')
+        .attr('font-size', '16px')
+        .attr('font-weight','bold');
     
     this.drawAxis(this.xScale, this.yScale);
     this.drawLines(this.xScale,this.yScale,this.data.grossing);
@@ -158,24 +176,6 @@ drawAxis(xScale, yScale) {
         .call(d3.axisLeft(yScale)
         .tickFormat((d)=> d/1000000000 + ' B'))
         .attr('transform', `translate(${MARGIN.left}, ${MARGIN.top})`);
-
-    svg
-        .append('text')
-        .attr('id', 'testText')
-        .text('Net Gross Income in Billions of Dollars')
-        .attr('transform', 'rotate(-90)')
-        .attr('x', -320)
-        .attr('y', 20)
-        .attr('fill', 'black')
-        .attr('font-size', '16px')
-        .attr('font-weight','bold');
-
-    svg.append('text')
-        .text('Time in Years')
-        .attr('transform', `translate(400,475)`)
-        .attr('fill', 'black')
-        .attr('font-size', '16px')
-        .attr('font-weight','bold');
 }
 
 drawLines(xScale, yScale, data) {
@@ -219,7 +219,21 @@ drawLines(xScale, yScale, data) {
                 // if (xScale(new Date(date)) >= 0)
                     return yScale(d['salesAccum']);
             })(values))
-        .on('mouseover', function() {
+        .on('mouseover', function(e) {
+            for (const key in hold.data.tooltipValues) {
+                delete hold.data.tooltipValues[key];
+            }
+
+            let className = (this.getAttribute('class'));
+            distributors.forEach(function(d) {
+                if(className === d[0]['Distributor'].replaceAll(' ', '').replaceAll('.','').replaceAll('-','')
+                .replaceAll('(','')
+                .replaceAll(')',''))
+                    hold.data.tooltipValues.Distributor = (d[0]['Distributor']).toString();
+            });
+
+            d3.select('#toolTip').attr('hidden', null);
+            hold.data.toolTip.draw(e.x, e.y);
             // If Distributor is selected, don't change that path on mouseover
             if (d3.selectAll('#click').nodes().length > 0){ 
                 let holder = d3.selectAll('#click').nodes()[0];
@@ -237,6 +251,8 @@ drawLines(xScale, yScale, data) {
             }
         })
         .on('mouseout', function() {
+            
+            d3.select('#toolTip').attr('hidden', 'hidden');
             // If Distributor is selected, don't change that path on mouseout
             if (d3.selectAll('#click').nodes().length > 0){
                 let holder = d3.selectAll('#click').nodes()[0];

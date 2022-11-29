@@ -14,8 +14,8 @@ class BarChart{
         this.createBarChart();
         this.drawAxis();
         this.createDropdown();
-        this.registerListeners();
         this.drawRects();
+        this.registerListeners();
     }
 
     drawRects(){
@@ -68,6 +68,25 @@ class BarChart{
         // .append("g")
         // .attr("transform",
             // `translate(${margin.left}, ${margin.top})`); 
+
+            
+        svg
+        .append('text')
+        // .attr('id', 'testText')
+        .text('Net Gross Income in Billions of Dollars')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -340)
+        .attr('y', 40)
+        .attr('fill', 'black')
+        .attr('font-size', '16px')
+        .attr('font-weight','bold');
+
+        svg.append('text')
+            .text('Time in Years')
+            .attr('transform', `translate(400,505)`)
+            .attr('fill', 'black')
+            .attr('font-size', '16px')
+            .attr('font-weight','bold');
     }
 
             
@@ -117,7 +136,9 @@ class BarChart{
         .nice();
 
         svg.append("g")
-        .call(d3.axisLeft(this.yScale));
+        .call(d3.axisLeft(this.yScale)
+        .tickFormat((d)=> d/1000000000 + ' B'));
+
     }
 
     registerListeners(){
@@ -126,6 +147,58 @@ class BarChart{
             this.genreSelected = e.target.value;
             this.drawAxis();
             this.drawRects();
+            this.registerListeners();
+        });
+
+        let bars = d3.select(".barChart").select("#rects")
+        .on("mouseover", (e,d) => {
+            d3.select('#toolTip').attr('hidden', null);
+            if(e != this.e) {
+                
+                this.globalFlags.tooltipValues.Genre = this.genreSelected;
+                this.globalFlags.tooltipValues.Movie = e.target.id;
+                
+                
+            }
+            this.e = e;
+            
+
+            if(d3.selectAll('.barClick').nodes().length > 0) {
+                let holder = d3.selectAll('.barClick').nodes()[0];
+                if (e.path[0] !== holder) {
+                    bars.selectAll('rect').attr('class', 'barHover');
+                    d3.select(holder).attr('class', 'barClick');
+                    d3.select(e.path[0]).attr('class', '');
+                }
+            }
+            else { 
+            bars.selectAll('rect').attr('class', 'barHover');
+            d3.select(e.path[0])
+                .attr('class', '');
+            }
+        })
+        .on('mouseout', function(e) {
+            d3.select('#toolTip').attr('hidden', 'hidden');
+            // hold.globalFlags.tooltipValues.Movie = null;
+
+            if (d3.selectAll('.barClick').nodes().length > 0) {
+                let holder = d3.selectAll('.barClick').nodes()[0];
+                bars.selectAll('rect').attr('class', 'barHover');
+                d3.select(holder).attr('class', 'barClick')
+            } else {
+                bars.selectAll('rect').attr('class', '');
+            }
+        })
+        .on('click', function(e) {
+            bars.selectAll('rect').attr('class', 'barHover');
+            d3.select(e.path[0]).attr('class', 'barClick');
+        });
+
+
+        // this.globalFlags.tooltipValues.Genre = this.genreSelected;
+
+        d3.select(".barChart").on("mousemove", e => {
+            this.globalFlags.toolTip.draw(e.x, e.y);
         });
     }
 
