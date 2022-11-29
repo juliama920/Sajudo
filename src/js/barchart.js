@@ -14,8 +14,8 @@ class BarChart{
         this.createBarChart();
         this.drawAxis();
         this.createDropdown();
-        this.drawRects();
         this.registerListeners();
+        this.drawRects();
     }
 
     drawRects(){
@@ -126,52 +126,6 @@ class BarChart{
             this.genreSelected = e.target.value;
             this.drawAxis();
             this.drawRects();
-            this.registerListeners();
-        });
-
-        let bars = d3.select(".barChart").select("#rects")
-        .on("mouseover", (e,d) => {
-            if(e != this.e) {
-                this.globalFlags.tooltipValues.Movie = e.target.id;
-            }
-            this.e = e;
-            
-
-            if(d3.selectAll('.barClick').nodes().length > 0) {
-                let holder = d3.selectAll('.barClick').nodes()[0];
-                if (e.path[0] !== holder) {
-                    bars.selectAll('rect').attr('class', 'barHover');
-                    d3.select(holder).attr('class', 'barClick');
-                    d3.select(e.path[0]).attr('class', '');
-                }
-            }
-            else { 
-            bars.selectAll('rect').attr('class', 'barHover');
-            d3.select(e.path[0])
-                .attr('class', '');
-            }
-        })
-        .on('mouseout', function(e) {
-            hold.globalFlags.tooltipValues.Movie = null;
-
-            if (d3.selectAll('.barClick').nodes().length > 0) {
-                let holder = d3.selectAll('.barClick').nodes()[0];
-                bars.selectAll('rect').attr('class', 'barHover');
-                d3.select(holder).attr('class', 'barClick')
-            } else {
-                bars.selectAll('rect').attr('class', '');
-            }
-        })
-        .on('click', function(e) {
-            bars.selectAll('rect').attr('class', 'barHover');
-            d3.select(e.path[0]).attr('class', 'barClick');
-        });
-
-
-        this.globalFlags.tooltipValues.Genre = this.genreSelected;
-
-        d3.select(".barChart").on("mousemove", e => {
-            this.globalFlags.toolTip.draw(e.x, e.y);
         });
     }
 
