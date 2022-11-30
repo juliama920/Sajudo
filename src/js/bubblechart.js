@@ -15,7 +15,7 @@ class BubbleChart{
             .domain([d3.min(this.filteredData.map(d=>parseInt(d["score"]))),8.5,d3.max(this.filteredData.map(d=>parseInt(d["score"])))]).range([1,8.5,14])
         //let numNodes = this.gross.length;
         let genre=['Action', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Horror', 'Comedy', 'Biography'] // removed the family because it had only 1, 'Mystery', 'Fantasy','Romance'
+        'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy'] // removed the family because it had only 1, 'Mystery', 'Fantasy','Romance'
         this.colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
     
     }
@@ -23,6 +23,7 @@ class BubbleChart{
         // adding Event listeners
         let that=this
         let activities = document.getElementById("type");
+
         activities.addEventListener("change", (e,d)=>{
             if (d3.select('#type').property('value')==="scatter"){
                 that.removeScatter();
@@ -34,6 +35,10 @@ class BubbleChart{
                 that.draw()
             }
         });
+        
+        /*activities2.addEventListener("click", (e,d)=>{
+            console.log("data",d)
+        });*/
 
     }
 
@@ -96,7 +101,7 @@ class BubbleChart{
             .force('collision', d3.forceCollide().radius(function(d) {
                 return parseFloat(d.score);
             }));
-
+        let that=this
         let node=d3.select(".bubbleChart")
             .selectAll(".bubble")
             .data(nodeData)
@@ -107,9 +112,15 @@ class BubbleChart{
             .attr("r",d=>(d.score) > 0 ? this.size (d.score):0)//???????????????? for now replaced the nan with 0
             .attr("cx",d=>(parseInt(d["World Sales (in $)"])))
             .attr("cy",500/2)
-            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",0.8)
+            .attr("fill",d=> this.colormap (d.genre)).attr("opacity",0.9)
             .attr("stroke","black")
             .attr("stroke-width","0.5")
+            .on("click",(e,d)=>{
+            
+            that.globalFlags.selectedMovie = d.Title;
+            that.globalFlags.Genre=d.genre;
+            that.redrawOthers(that);
+        })
             .on('tick', ticked);
            
         function ticked(){
@@ -117,7 +128,6 @@ class BubbleChart{
                 .attr("cy", function(d){ return d.y;})
         }
         //console.log(globalFlags.combined)
-        let that=this
         simulation.on("tick",ticked)
         if(globalFlags.selectedMovie!=null){
             //console.log(globalFlags.selectedMovie)
@@ -147,7 +157,7 @@ class BubbleChart{
     
     addLegend(){
         let genre=['Horror', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Action', 'Comedy', 'Biography']// 'Mystery', 'Fantasy','Romance'
+        'Crime', 'Action', 'Comedy', 'Biography' ,'Mystery', 'Fantasy']//,'Romance'
         let size=10
         d3.select(".bubbleChart").selectAll(".beeslegend")
             .data(genre)

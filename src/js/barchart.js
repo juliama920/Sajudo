@@ -5,12 +5,13 @@ class BarChart{
         this.redrawOthers = redrawOthers;
         this.data = data;
         this.globalFlags.Genre = "Action";
+        this.genre=['Action', 'Drama', 'Animation',  'Adventure',
+        'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy']
     }
     
     //draw function for this chart. do not call drawAll from here.
     draw(){
         this.genreRevenueMap = this.getGenreMap();
-
         this.createBarChart();
         this.drawAxis();
         if(d3.select("#genreDropdown").empty()) this.createDropdown();
@@ -22,7 +23,6 @@ class BarChart{
         d3.select(".barChart").select("#rects").remove();
 
         let rects = d3.select(".barChart").append("g").attr("id", "rects");
-
         let topThirty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
 
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
@@ -102,7 +102,6 @@ class BarChart{
         .append("g")
         .attr('id', 'axis')
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
         let topTwenty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
 // console.log(topTwenty);
         const keys = this.globalFlags.grossing.columns.slice(1);
@@ -153,7 +152,6 @@ class BarChart{
         .on("mouseover", (e,d) => {
             // d3.select('#toolTip').attr('hidden', null);
             if(e != this.e) {
-                
                 this.globalFlags.tooltipValues.Genre = this.globalFlags.Genre;
                 this.globalFlags.tooltipValues.Movie = e.target.id;
             
@@ -215,7 +213,7 @@ class BarChart{
     getGenreMap(){
         let genreRevenueMap = new Map();
 
-        let movieGenres = this.getAllGrossingGenres();
+        let movieGenres = this.genre//this.getAllGrossingGenres();
 
         for(let genre of movieGenres){
             genreRevenueMap.set(genre, [])

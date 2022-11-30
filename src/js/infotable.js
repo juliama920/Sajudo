@@ -65,12 +65,16 @@ class Info{
         let categories=['Action', 'Drama', 'Animation',  'Adventure',
         'Crime', 'Horror', 'Comedy', 'Biography','Mystery', 'Fantasy','Romance','Family']
         
+        /*this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        if (isNaN(globalFlags.selectedDistributor)){
+            console.log("true")
+            this.filteredData=this.combined
+        }*/
+        
         this.colormap=d3.scaleSequential(d3.interpolateRdBu).domain([d3.min(this.combined.map(d=>parseFloat(d["score"])))/10,d3.max(this.combined.map(d=>parseFloat(d["score"])))/10])//.range(['red','white','blue']);
-        //console.log("1",this.colormap(d3.min(this.combined.map(d=>parseFloat(d["score"])))/10))
-        //console.log("2",this.colormap(d3.max(this.combined.map(d=>parseFloat(d["score"])))/10))
-        //this.colormap= d3.scaleDiverging().domain([d3.min(this.combined.map(d=>parseFloat(d["score"])))/10,5,d3.max(this.combined.map(d=>parseFloat(d["score"])))/10]).interpolator(d3.interpolateRdBu)
         this.attachSortHandlers();
         this.drawLegend();
+        
 
     }
 
@@ -118,12 +122,17 @@ class Info{
     }
 
     drawTable() {
-        //this.drawLegend();
-        //<div class="grid-child purple">
+        //console.log(globalFlags.selectedDistributor)
+        this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        //console.log(this.filteredData)
+        
+        if (globalFlags.selectedDistributor===null){
+            this.filteredData=this.combined
+        }
         let rowSelection = //d3.select(".grid-child purple").append('table').attr("id",'#predictionTableBody')
         d3.select('#predictionTableBody')    
         .selectAll('tr')
-            .data(this.combined)
+            .data(this.filteredData)
             .join('tr');
        
         let forecastSelection = rowSelection.selectAll('td')
