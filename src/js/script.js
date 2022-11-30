@@ -53,7 +53,6 @@ function drawAll(barChart, bubbleChart, lineChart, streamChart, table,infoTable)
 }
 
 function redrawOthers(objectCalledFrom){
-    console.log("calling redrawOthers");
     if(objectCalledFrom instanceof BarChart) {
         globalFlags.lineChart.draw();
         globalFlags.streamChart.draw();
@@ -89,7 +88,7 @@ function redrawOthers(objectCalledFrom){
     }
 
     if(objectCalledFrom instanceof StreamChart){
-        // console.log("called from StreamChart");
+        console.log("called from StreamChart");
         globalFlags.lineChart.draw();
         globalFlags.table.draw();
         globalFlags.barChart.draw();
