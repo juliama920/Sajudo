@@ -33,7 +33,7 @@ class Tooltip{
         for (const key in this.globalFlags.tooltipValues) {
             delete this.globalFlags.tooltipValues[key];
           }
-          
+    }   
 
     destroy(){
         let tooltipSVG = d3.select("#toolTip").select("svg");
