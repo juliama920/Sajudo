@@ -78,7 +78,7 @@ class Table{
 
                 thisH.data.selectedDistributor = this.className;
                 thisH.data.selectedMovie = null;
-                thisH.redrawOthers(thisH)
+                thisH.redrawOthers(thisH)              
             });
     }
 
