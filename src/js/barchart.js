@@ -4,7 +4,7 @@ class BarChart{
         this.globalFlags = globalFlags;
         this.redrawOthers = redrawOthers;
         this.data = data;
-        this.genreSelected = "Action";
+        this.globalFlags.Genre = "Action";
     }
     
     //draw function for this chart. do not call drawAll from here.
@@ -14,7 +14,6 @@ class BarChart{
         this.createBarChart();
         this.drawAxis();
         if(d3.select("#genreDropdown").empty()) this.createDropdown();
-        this.registerListeners();
         this.drawRects();
         this.registerListeners();
     }
@@ -24,7 +23,7 @@ class BarChart{
 
         let rects = d3.select(".barChart").append("g").attr("id", "rects");
 
-        let topThirty = this.genreRevenueMap.get(this.genreSelected).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
+        let topThirty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
 
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
@@ -92,7 +91,6 @@ class BarChart{
 
             
     drawAxis(){    
-        
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
@@ -105,7 +103,7 @@ class BarChart{
         .attr('id', 'axis')
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-        let topTwenty = this.genreRevenueMap.get(this.genreSelected).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
+        let topTwenty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
 // console.log(topTwenty);
         const keys = this.globalFlags.grossing.columns.slice(1);
 
@@ -145,7 +143,7 @@ class BarChart{
     registerListeners(){
         let hold = this;
         d3.select("#genreDropdown").on("click", e => {
-            this.genreSelected = e.target.value;
+            this.globalFlags.Genre = e.target.value;
             this.drawAxis();
             this.drawRects();
             this.registerListeners();
@@ -156,7 +154,7 @@ class BarChart{
             // d3.select('#toolTip').attr('hidden', null);
             if(e != this.e) {
                 
-                this.globalFlags.tooltipValues.Genre = this.genreSelected;
+                this.globalFlags.tooltipValues.Genre = this.globalFlags.Genre;
                 this.globalFlags.tooltipValues.Movie = e.target.id;
             
             }
@@ -197,8 +195,10 @@ class BarChart{
 
         // this.globalFlags.tooltipValues.Genre = this.genreSelected;
 
-        d3.select(".barChart").on("mousemove", e => {
-            this.globalFlags.toolTip.draw(e.x, e.y);
+        let barchart = d3.select(".barChart");
+
+        barchart.on("mousemove", e => {
+            this.globalFlags.toolTip.draw(e.x, e.pageY);
         });
     }
 

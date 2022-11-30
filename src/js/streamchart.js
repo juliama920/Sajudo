@@ -16,6 +16,7 @@ class StreamChart{
 
         this.globalFlags.test = "true";
         // this.redrawOthers(this)
+        this.registerEventListeners();
     }
 
     drawStreamChart(){
@@ -76,7 +77,8 @@ class StreamChart{
         .data(stackedData)
         .join("path")
         .attr("transform",
-        `translate(10, -200)`)
+        `translate(0, -200)`)
+        .attr("id", d => d.key)
         .style("stroke", "none")
         .style("fill", function(d) { 
             return color(d.key); })
@@ -91,12 +93,27 @@ class StreamChart{
             .y1(function(d) {
                 return y(d[1]); 
             })
-        )
+        );
     }
 
     //add event listeners
     registerEventListeners(){
-        
+        let paths =  d3.select(".streamChart").selectAll("path");
+        paths.on("mouseover", e => {
+            this.globalFlags.toolTip.destroy();
+            const color = d3.scaleOrdinal().domain(this.allMoviesGenres).range(d3.schemeCategory10);
+            paths.style("opacity", .5);
+            d3.select(`#${this.globalFlags.Genre}`).style("opacity", 1);
+            e.target.style.opacity = 1;
+        }).on("mouseout", e => {
+            paths.style("opacity", 1);
+        }).on("click", e=> {
+            paths.style("opacity", .5);
+            this.globalFlags.Genre = e.target.id;
+            e.target.style.opacity = 1;
+            console.log(this.globalFlags.Genre);
+            this.globalFlags.barChart.draw();
+        });
     }
 
     //Return Array containing all Genres that appear in grossing

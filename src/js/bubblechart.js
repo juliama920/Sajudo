@@ -138,9 +138,9 @@ class BubbleChart{
 
             }
             that.e = e;
-            that.globalFlags.toolTip.draw(e.x, e.y);
+            that.globalFlags.toolTip.draw(e.x, e.pageY);
         });
-        this.axesText()  
+        this.axesText();
     }
 
     
