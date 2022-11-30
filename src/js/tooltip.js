@@ -26,4 +26,11 @@ class Tooltip{
             i++;
         }
     }
+
+    clearData() {
+        for (const key in this.globalFlags.tooltipValues) {
+            delete this.globalFlags.tooltipValues[key];
+          }
+          
+    }
 }

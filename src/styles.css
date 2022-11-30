@@ -79,8 +79,14 @@ circle#unselected{
 }
 
 circle#selected {
-    fill: steelblue;
+    /* fill: steelblue; */
     stroke: black;
+}
+
+circle#hover {
+    fill: white;
+    stroke: black;
+    stroke-width: 3px;
 }
 
 table, th, td, tr {

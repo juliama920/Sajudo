@@ -23,9 +23,8 @@ constructor(globalFlags, redrawOthers) {
         .range([0, CHART_WIDTH- 100])
         .nice();
 
-    svg
-        .append('text')
-        // .attr('id', 'testText')
+    svg.append('text')
+        .attr('id', 'textY')
         .text('Net Gross Income in Billions of Dollars')
         .attr('transform', 'rotate(-90)')
         .attr('x', -320)
@@ -104,7 +103,7 @@ constructor(globalFlags, redrawOthers) {
 
                     let dateA = new Date(parseInt(xScale.invert(x0).getYear() + 1900) + '');
                     let dateB = new Date(parseInt(xScale.invert(x1).getYear() + 1900) + '');
-                      
+                        
                     let distributors = d3.group(hold.data.grossing, (d)=> d['Distributor']);
                     let filteredData = [];
                     distributors.forEach(function(d) {
@@ -135,22 +134,26 @@ constructor(globalFlags, redrawOthers) {
                         .nice();
                         
                     hold.drawLines(hold.xScale, hold.yScale, filteredData);
-                    svg.append('rect')
-                        .attr('height', 430)
-                        .attr('width', 70)
-                        .attr('x', 0)
-                        .attr('y', 0)
-                        .style('fill', 'white');
+
+                    svg.select('.cover').remove();
+                    svg.select('.cover2').remove();
                     svg.append('rect')
                         .attr('class','cover')
                         .attr('height',380)
                         .attr('width', 50)
                         .attr('x', 870)
                         .attr('y', 0)
-                        .style('fill','white')
+                        .style('fill','white');
+                    svg.append('rect')
+                        .attr('class', 'cover2')
+                        .attr('height', 430)
+                        .attr('width', 70)
+                        .attr('x', 0)
+                        .attr('y', 0)
+                        .style('fill', 'white');
                     hold.drawAxis(hold.xScale, hold.yScale);
-
-                    svg.select('#circles').remove();
+                    
+                    svg.select('#textY').raise();
                 }
             });
         selection.call(brush);
@@ -220,10 +223,7 @@ drawLines(xScale, yScale, data) {
                     return yScale(d['salesAccum']);
             })(values))
         .on('mouseover', function(e) {
-            for (const key in hold.data.tooltipValues) {
-                delete hold.data.tooltipValues[key];
-            }
-
+            hold.data.toolTip.clearData();
             let className = (this.getAttribute('class'));
             distributors.forEach(function(d) {
                 if(className === d[0]['Distributor'].replaceAll(' ', '').replaceAll('.','').replaceAll('-','')
@@ -232,7 +232,7 @@ drawLines(xScale, yScale, data) {
                     hold.data.tooltipValues.Distributor = (d[0]['Distributor']).toString();
             });
 
-            d3.select('#toolTip').attr('hidden', null);
+            // d3.select('#toolTip').attr('hidden', null);
             hold.data.toolTip.draw(e.x, e.y);
             // If Distributor is selected, don't change that path on mouseover
             if (d3.selectAll('#click').nodes().length > 0){ 
@@ -252,7 +252,7 @@ drawLines(xScale, yScale, data) {
         })
         .on('mouseout', function() {
             
-            d3.select('#toolTip').attr('hidden', 'hidden');
+            // d3.select('#toolTip').attr('hidden', 'hidden');
             // If Distributor is selected, don't change that path on mouseout
             if (d3.selectAll('#click').nodes().length > 0){
                 let holder = d3.selectAll('#click').nodes()[0];
@@ -281,17 +281,16 @@ drawLines(xScale, yScale, data) {
             event.y > 622 &&
             event.y < 650) {
                 // Click event is in brush area, ignore
-                console.log('ignored')
             }
         // Click event is a svg object, reset linechart and table    
         else if((event.path.length === 7)) { 
-            // d3.selectAll('#click').attr('id', '');
             lines.attr('id', '');
             hold.data.selectedDistributor = null;
             hold.data.selectedMovie = null;
             hold.redrawOthers(hold);
 
             svg.select('#circles').remove();
+            
 
         }  
     });
@@ -300,15 +299,21 @@ drawLines(xScale, yScale, data) {
 }
 
 drawCircles(xScale, yScale, data) {
+
     let svg = d3.select('.lineChart');
     let distributors = d3.group(data, (d)=> d['Distributor']);
     let selectedData = distributors.get(this.data.selectedDistributor);
+
+    let genre=['Horror', 'Drama', 'Animation',  'Adventure',
+        'Crime', 'Action', 'Comedy', 'Biography'];
+    let colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
+    
 
     // d3.select(`.${this.data.selectedDistributor.replaceAll(' ', '').substring(0,5)}`)
     let hold = this;
 
     svg.select('#circles').remove();
-    svg.append('g')
+    let circles = svg.append('g')
         .attr('id','circles')
         .selectAll('circle')
         .data(selectedData)
@@ -319,7 +324,8 @@ drawCircles(xScale, yScale, data) {
             .replaceAll('-','')
             .replaceAll('(','')
             .replaceAll(')','')
-            .replaceAll('\'',''))
+            .replaceAll('\'','')
+            .replaceAll('!',''))
         .attr('cx', function(d) {
             let date = d['Title'].substr(-5).slice(0,-1);
             if(new Date(date) < xScale.invert(900) && new Date(date) > xScale.invert(0))
@@ -332,6 +338,64 @@ drawCircles(xScale, yScale, data) {
                 return yScale(d['salesAccum']) + 50;
         })
         .attr('r', 5)
+        .on('mouseover', function (e){
+            let className = (this.getAttribute('class'));
+            selectedData.forEach(function(d) {
+                if(className === d['Title'].replaceAll(' ','')
+                .replaceAll(':','')
+                .replaceAll('-','')
+                .replaceAll('(','')
+                .replaceAll(')','')
+                .replaceAll('\'','')
+                .replaceAll('!','') ) {
+                    hold.data.tooltipValues.Movie = (d['Title']).toString();
+                    
+            hold.data.tooltipValues['Net Gross Income'] = '$' + d['World Sales (in $)'];
+                }
+            });
+
+            
+            hold.data.toolTip.draw(e.x, e.y);
+
+            if (d3.selectAll('#selected').nodes().length > 0){ 
+                let holder = d3.selectAll('#selected').nodes()[0];
+                if (this !== holder){
+                    circles.attr('id', 'unselected')
+                    .style('fill', 'white');
+                    d3.select(holder).attr('id', 'selected')
+                    .style('fill', function(d) {
+                        let temp = (hold.data.combined.filter(function(a){return a['Title'] === d['Title']}))
+                        return colormap(temp[0]['genre']);
+                    });
+                    d3.select(this)
+                        .attr('id', 'hover');
+                }
+            }
+            else { // If no movie is selected all circles indicate mouseover
+            circles.attr('id', 'unselected')
+                .style('fill', 'white');
+            d3.select(this)
+                .attr('id', 'hover');
+            }
+        })
+        .on('mouseout', function() {
+            if (d3.selectAll('#selected').nodes().length > 0){
+
+                let holder = d3.selectAll('#selected').nodes()[0];
+
+                circles.attr('id', 'unselected')
+                .style('fill', 'white');
+
+                d3.select(holder).attr('id', 'selected')
+                .style('fill', function(d) {
+                    let temp = (hold.data.combined.filter(function(a){return a['Title'] === d['Title']}))
+                    return colormap(temp[0]['genre']);
+                });
+            } else {
+                circles.attr('id', 'unselected')
+                .style('fill', 'white');
+            }
+        })
         .on('click' , function(d) {
             // Movie gets selected
             let title = d.path[0].__data__.Title.replaceAll(' ','')
@@ -339,32 +403,43 @@ drawCircles(xScale, yScale, data) {
                 .replaceAll('-','')
                 .replaceAll('(','')
                 .replaceAll(')','')
-                .replaceAll('\'','');
+                .replaceAll('\'','')
+                .replaceAll('!','');
                 
             d3.select('#circles')
             .selectAll('circle')
             .attr('id', 'unselected')
-            .attr('r', 5);
+            .attr('r', 5)
+            .style('fill', 'white');
 
             svg.select(`.${title}`)
                 .attr('id', 'selected')
                 .attr('r', 8)
+                .style('fill', function(d) {
+                    let temp = (hold.data.combined.filter(function(a){return a['Title'] === d['Title']}))
+                    return colormap(temp[0]['genre']);
+                })
                 .raise();
 
             hold.data.selectedMovie = d.path[0].__data__.Title;
             hold.redrawOthers(hold);
         });
     svg.select('.cover').raise();
+    svg.select('text').raise();
+    // svg.select('#x-axis').raise();
 }
 
 draw(){
     // Distributor is selected
     if (this.data.selectedDistributor) {
+        this.data.tooltipValues.Movie = this.data.selectedDistributor;
+
         // Reset Movie selector
         d3.select('#circles')
             .selectAll('circle')
             .attr('id', 'unselected')
-            .attr('r', 5);
+            .attr('r', 5)
+            .style('fill', 'white');
         
         let selected = this.data.selectedDistributor;
         d3.selectAll('path')
@@ -373,7 +448,8 @@ draw(){
                 .replaceAll('.','')
                 .replaceAll('-','')
                 .replaceAll('(','')
-                .replaceAll(')','')}`)
+                .replaceAll(')','')
+                .replaceAll('!','')}`)
             .attr('id', 'click')
             .raise();
         
@@ -391,7 +467,8 @@ draw(){
         d3.select('#circles')
             .selectAll('circle')
             .attr('id', 'unselected')
-            .attr('r', 5);
+            .attr('r', 5)
+            .style('fill', 'white');
         
         d3.select('#circles')
             .select(`.${movie}`)
@@ -401,3 +478,4 @@ draw(){
     }
 }
 }
+    
