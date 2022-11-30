@@ -5,17 +5,19 @@ class Tooltip{
     }
 
     draw(xCoord = 0, yCoord = 0){
-    // draw(xCoord, yCoord){
+        this.lastX = xCoord;
+        this.lastY = yCoord;
+
         d3.select("#toolTip").select("svg").remove();
         d3.select("#toolTip").append("svg").attr("width", "300").attr("height", "200")
-        .attr("transform",`translate(${xCoord - 1000 }, ${yCoord + 60})`)
-        // .attr("transform",`translate(${xCoord - 500 }, ${yCoord - 500})`)
+        // .attr("x",xCoord).attr("y", yCoord)
+        .attr("transform",`translate(${xCoord - 1000 }, ${yCoord - 1000})`)
         .append("path")
         .attr("d", "M 0, 82.5 C 0, 0 0, 0 82.5, 0 S 300, 0 300, 82.5 165, 165 82.5, 165 0, 165 0, 82.5")
         .attr("x", "10").attr("y", "10").attr("opacity", ".5").attr("width", "100").attr("height", "100").attr("fill", "lightblue");
         this.fillTooltip();
     }
-
+    
     fillTooltip(){
         let tooltipSVG = d3.select("#toolTip").select("svg");
         let i = 0;
@@ -32,5 +34,9 @@ class Tooltip{
             delete this.globalFlags.tooltipValues[key];
           }
           
+
+    destroy(){
+        let tooltipSVG = d3.select("#toolTip").select("svg");
+        tooltipSVG.remove();
     }
 }
