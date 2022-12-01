@@ -230,6 +230,8 @@ class BubbleChart{
         if ((globalFlags.selectedDistributor)!=null){
             //d3.selectAll(".axes").remove()
             this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        } else{
+            this.filteredData=this.combined
         }
         
 // append the svg object to the body of the page
