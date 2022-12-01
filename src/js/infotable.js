@@ -17,6 +17,11 @@ class Info{
                 ascending: false,
                 key: 'writer'
             },
+            {
+                sorted: false,
+                ascending: false,
+                key: 'director'
+            },
             { // for frequency
                 sorted: false,
                 ascending: false,
@@ -45,8 +50,8 @@ class Info{
         ]
         
         this.margin={"top":0, "left":10,"right":15,"buttom":0}
-        this.bigVizHeight=200;
-        this.vizWidth = 140;
+        this.bigVizHeight=230;
+        this.vizWidth = 170;
         this.vizHeight = 50;
         this.smallVizHeight = 20;
         this.smallVizWidth=50;
@@ -80,7 +85,7 @@ class Info{
 
     drawLegend() {
         
-        let svgArray=["#margin2Axis","#margin3Axis","#margin4Axis","#margin5Axis","#margin6Axis"];
+        let svgArray=["#margin2Axis","#margin3Axis","#margin4Axis","#margin5Axis","#margin6Axis","#margin7Axis"];
         let counter=0;
         
         d3.select("#margin1Axis")
@@ -92,7 +97,7 @@ class Info{
         .attr('x',this.vizWidth/2-30)
         .attr('y',15)
         .text("Title")
-        let textArray=["Writer","IMDbScore","Runtime(min)","Budget(M$)","WorldSales(M$)"]
+        let textArray=["Writer","IMDbScore","Runtime(min)","Budget(M$)","WorldSales(M$)","Director"]
         svgArray.forEach(element => { 
             d3.select(element)
             .attr("width",this.vizWidth)
@@ -126,9 +131,9 @@ class Info{
         this.filteredData=this.combined//.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
         //console.log(this.filteredData)
         
-        if (globalFlags.selectedDistributor===null){
+        /*if (globalFlags.selectedDistributor===null){
             this.filteredData=this.combined
-        }
+        }*/
         let rowSelection = //d3.select(".grid-child purple").append('table').attr("id",'#predictionTableBody')
         d3.select('#predictionTableBody')    
         .selectAll('tr')
@@ -170,6 +175,11 @@ class Info{
             name:'writer',
             value: d.writer
         };
+        let director = {
+            type: 'text',
+            name:'director',
+            value: d.director
+        };
 
         let score = {
             type: 'viz',
@@ -199,7 +209,7 @@ class Info{
             
         };
 
-        let dataList = [title, writer, score, runtime,budget,sale];
+        let dataList = [title, writer, score, runtime,budget,sale,director];
     
         return dataList;
     }
