@@ -3,6 +3,8 @@ class StreamChart{
     constructor(globalFlags, redrawOthers){
         this.globalFlags = globalFlags;
         this.redrawOthers = redrawOthers;
+        this.genre=['Action', 'Drama', 'Animation',  'Adventure',
+        'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy']
     }
 
     //draw function for this chart. do not call drawAll from here.
@@ -42,7 +44,7 @@ class StreamChart{
 
         sortedData = sortedData.slice(1, sortedData.length - 2);
 
-        console.log(sortedData);
+        //console.log(sortedData);
 
         // Add X axis
         const x = d3.scaleTime()
@@ -63,14 +65,17 @@ class StreamChart{
         // .call(d3.axisLeft(y));
 
         // color palette
-        const color = d3.scaleOrdinal().domain(this.allMoviesGenres).range(d3.schemeCategory10);
+        
+        const color = d3.scaleOrdinal().domain(this.genre).range(d3.schemeCategory10);
+        //this.allMoviesGenres
 
         //stack the data
         const stackedData = d3.stack()
         .offset(d3.stackOffsetSilhouette)
-        .keys(this.allMoviesGenres).value((obj, key) => obj[key])
+        .keys(this.genre).value((obj, key) => obj[key])
         (sortedData);
-
+        //this.allMoviesGenres
+        //console.log("sara",this.allMoviesGenres)
         //Show the areas
         svg
         .selectAll("mylayers")
@@ -101,7 +106,8 @@ class StreamChart{
         let paths =  d3.select(".streamChart").selectAll("path");
         paths.on("mouseover", e => {
             this.globalFlags.toolTip.destroy();
-            const color = d3.scaleOrdinal().domain(this.allMoviesGenres).range(d3.schemeCategory10);
+            //this.allMoviesGenres
+            const color = d3.scaleOrdinal().domain(this.genre).range(d3.schemeCategory10);
             paths.style("opacity", .5);
             d3.select(`#${this.globalFlags.Genre}`).style("opacity", 1);
             e.target.style.opacity = 1;
@@ -111,7 +117,7 @@ class StreamChart{
             paths.style("opacity", .5);
             this.globalFlags.Genre = e.target.id;
             e.target.style.opacity = 1;
-            console.log(this.globalFlags.Genre);
+            //console.log(this.globalFlags.Genre);
             this.globalFlags.barChart.draw();
         });
     }
