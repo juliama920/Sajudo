@@ -108,13 +108,13 @@ class StreamChart{
             this.globalFlags.toolTip.destroy();
             //this.allMoviesGenres
             const color = d3.scaleOrdinal().domain(this.genre).range(d3.schemeCategory10);
-            paths.style("opacity", .5);
+            paths.style("opacity", .3);
             d3.select(`#${this.globalFlags.Genre}`).style("opacity", 1);
             e.target.style.opacity = 1;
         }).on("mouseout", e => {
             paths.style("opacity", 1);
         }).on("click", e=> {
-            paths.style("opacity", .5);
+            paths.style("opacity", .3);
             this.globalFlags.Genre = e.target.id;
             e.target.style.opacity = 1;
             //console.log(this.globalFlags.Genre);

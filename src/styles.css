@@ -101,9 +101,6 @@ table, th, td, tr {
     border: 1px solid black;
     border-collapse: collapse;
 }
-td{
-    width: 250px;
-}
 #table th {
     text-align: center;
 }
@@ -308,4 +305,6 @@ header {
 }
 .table2 , th, tr, td {
     border:none;
+    max-width:100%;
+    white-space:nowrap;
 }
