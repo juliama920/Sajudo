@@ -123,7 +123,7 @@ class Info{
 
     drawTable() {
         //console.log(globalFlags.selectedDistributor)
-        this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        this.filteredData=this.combined//.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
         //console.log(this.filteredData)
         
         if (globalFlags.selectedDistributor===null){
