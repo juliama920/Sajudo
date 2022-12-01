@@ -65,11 +65,14 @@ class BubbleChart{
         height = 450 - margin.top - margin.bottom;
         
         this.addLegend()
-        console.log(globalFlags.selectedMovie)
+        //console.log(globalFlags.selectedMovie)
         
         if ((globalFlags.selectedDistributor)!=null){
             d3.selectAll(".axes").remove()
             this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        } else {
+            d3.selectAll(".axes").remove()
+            this.filteredData=this.combined.filter(d=>parseFloat(d["World Sales (in $)"])<1650000000)
         }
         //console.log(globalFlags.selectedDistributor)
         let minimum=(d3.min(this.filteredData.map(d=>parseInt(d["World Sales (in $)"]))))
@@ -133,11 +136,9 @@ class BubbleChart{
             //console.log(globalFlags.selectedMovie)
             //d3.selectAll(".bubble").attr("fill","grey")
             let circle=document.getElementById(globalFlags.selectedMovie)
-            
             circle.setAttribute('stroke-width', 4)
-            
-            //console.log(selectedCircle)
         }
+        
 
         d3.selectAll(".bubble").on("mousemove", (e,d) => {
             //console.log(d)
