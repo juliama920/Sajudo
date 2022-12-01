@@ -50,8 +50,8 @@ class Info{
         ]
         
         this.margin={"top":0, "left":10,"right":15,"buttom":0}
-        this.bigVizHeight=230;
-        this.vizWidth = 170;
+        this.bigVizHeight=350;
+        this.vizWidth = 180;
         this.vizHeight = 50;
         this.smallVizHeight = 20;
         this.smallVizWidth=50;
@@ -59,9 +59,9 @@ class Info{
         this.scaleX2 = d3.scaleLinear()
             .domain([0, 10])
             .range([0+this.margin.left, this.vizWidth-this.margin.right-6]);
-        this.scaleX3 = d3.scaleLinear()
+        /*this.scaleX3 = d3.scaleLinear()
             .domain([1, 7])
-            .range([0+this.margin.left, this.vizWidth-this.margin.right-6]);
+            .range([0+this.margin.left, this.vizWidth-this.margin.right-6]);*/
         
         /*let categories=new Set();
         this.words.forEach(element => {
@@ -112,17 +112,17 @@ class Info{
             
         });
         let axis2=d3.axisTop().scale(this.scaleX2);
-        let axis3=d3.axisTop().scale(this.scaleX3);
+        //let axis3=d3.axisTop().scale(this.scaleX3);
         d3.select("#margin3Axis").append('g').selectAll('text')
             .data([0,2,4,6,8,10])
             .join('text')
             .attr("transform",  d=>  `translate(${this.scaleX2(d)},40)`)
         d3.select("#margin3Axis").select('g').attr("transform","translate(5,52)").call(axis2.ticks(6))
-        d3.select("#margin4Axis").append('g').selectAll('text')
+        /*d3.select("#margin4Axis").append('g').selectAll('text')
             .data([-100, -50, 0, 50, 100])
             .join("text")
             .attr("transform",  d=>  `translate(${this.scaleX3(d)},40)`)
-        d3.select("#margin4Axis").select('g').attr("transform","translate(5,52)").call(axis3.ticks(5))
+        d3.select("#margin4Axis").select('g').attr("transform","translate(5,52)").call(axis3.ticks(5))*/
 
     }
 
@@ -217,7 +217,7 @@ class Info{
   /*  updateHeaders() {
       
 }*/
-    addGridlinesPercentage(containerSelect, ticks) {
+    /*addGridlinesPercentage(containerSelect, ticks) {
         containerSelect.selectAll('line')
         .data(ticks)
         .join('line')
@@ -227,7 +227,7 @@ class Info{
         .attr('y2',this.VizHeight)
         .attr('stroke','white')
         .attr("stroke-width","2")
-    }
+    }*/
    
     addRectangles(containerSelect) {
         //console.log(containerSelect.data())
@@ -263,7 +263,7 @@ class Info{
 
 
   
-    addRectanglesPercentage(containerSelect) {
+    /*addRectanglesPercentage(containerSelect) {
        //const heightPercent = 2/3;
        // const padPercent = (1 - heightPercent) / 2
     //console.log(containerSelect.data())
@@ -278,7 +278,7 @@ class Info{
        .attr("width",(d)=>this.scaleX3(d.value))
        .attr("opacity", 0.9)
        .attr("fill",d=>{return  this.colormap(parseFloat(d.score))/10})
-    }
+    }*/
    
     attachSortHandlers() 
     {

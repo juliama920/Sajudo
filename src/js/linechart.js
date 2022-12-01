@@ -304,8 +304,8 @@ drawCircles(xScale, yScale, data) {
     let distributors = d3.group(data, (d)=> d['Distributor']);
     let selectedData = distributors.get(this.data.selectedDistributor);
 
-    let genre=['Horror', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Action', 'Comedy', 'Biography'];
+    let genre=['Action', 'Drama', 'Animation',  'Adventure',
+        'Crime', 'Horror', 'Comedy', 'Biography'];
     let colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
     
 
