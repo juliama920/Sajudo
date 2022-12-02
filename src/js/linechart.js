@@ -330,10 +330,12 @@ drawCircles(xScale, yScale, data) {
             .replaceAll('(','')
             .replaceAll(')','')
             .replaceAll('\'','')
-            .replaceAll('!',''))
+            .replaceAll('!','')
+            .replaceAll(',',''))
         .attr('cx', function(d) {
             let date = d['Title'].substr(-5).slice(0,-1);
-            
+            // console.log(date);
+            // console.log(xScale.invert(900));
             if(new Date(date) < xScale.invert(900) && new Date(date) > xScale.invert(0)) 
                 return xScale(new Date(date)) + 80;
         })
@@ -353,7 +355,8 @@ drawCircles(xScale, yScale, data) {
                 .replaceAll('(','')
                 .replaceAll(')','')
                 .replaceAll('\'','')
-                .replaceAll('!','') ) {
+                .replaceAll('!','')
+                .replaceAll(',','') ) {
                     hold.data.tooltipValues.Movie = (d['Title']).toString();
                     
             hold.data.tooltipValues['Net Gross Income'] = '$' + d['World Sales (in $)'];
@@ -411,7 +414,8 @@ drawCircles(xScale, yScale, data) {
                 .replaceAll('(','')
                 .replaceAll(')','')
                 .replaceAll('\'','')
-                .replaceAll('!','');
+                .replaceAll('!','')
+                .replaceAll(',','');
                 
             d3.select('#circles')
             .selectAll('circle')
@@ -475,7 +479,8 @@ draw(){
             .replaceAll('-','')
             .replaceAll('(','')
             .replaceAll(')','')
-            .replaceAll('\'','');
+            .replaceAll('\'','')
+            .replaceAll(',','');
 
         d3.select('#circles')
             .selectAll('circle')
