@@ -135,22 +135,26 @@ constructor(globalFlags, redrawOthers) {
                         
                     hold.drawLines(hold.xScale, hold.yScale, filteredData);
 
-                    svg.select('.cover').remove();
-                    svg.select('.cover2').remove();
-                    svg.append('rect')
-                        .attr('class','cover')
-                        .attr('height',380)
-                        .attr('width', 50)
-                        .attr('x', 870)
-                        .attr('y', 0)
-                        .style('fill','white');
-                    svg.append('rect')
-                        .attr('class', 'cover2')
-                        .attr('height', 430)
-                        .attr('width', 70)
-                        .attr('x', 0)
-                        .attr('y', 0)
-                        .style('fill', 'white');
+                    if (svg.select('.cover').nodes().length > 0){
+                        svg.select('.cover').raise();
+                        svg.select('.cover2').raise();
+                    }
+                    else {
+                        svg.append('rect')
+                            .attr('class','cover')
+                            .attr('height',380)
+                            .attr('width', 50)
+                            .attr('x', 870)
+                            .attr('y', 0)
+                            .style('fill','white');
+                        svg.append('rect')
+                            .attr('class', 'cover2')
+                            .attr('height', 430)
+                            .attr('width', 70)
+                            .attr('x', 0)
+                            .attr('y', 0)
+                            .style('fill', 'white');
+                    }
                     hold.drawAxis(hold.xScale, hold.yScale);
                     
                     svg.select('#textY').raise();
@@ -261,6 +265,8 @@ drawLines(xScale, yScale, data) {
             } else {
                 lines.attr('id', '');
             }
+            
+            hold.data.toolTip.destroy();
         })
         .on('click', function(event) {
             // Distributor gets selected
@@ -290,8 +296,7 @@ drawLines(xScale, yScale, data) {
             hold.redrawOthers(hold);
 
             svg.select('#circles').remove();
-            
-
+            hold.data.toolTip.destroy();
         }  
     });
     lines.attr('transform', `translate(${80}, ${50})`);
@@ -328,7 +333,8 @@ drawCircles(xScale, yScale, data) {
             .replaceAll('!',''))
         .attr('cx', function(d) {
             let date = d['Title'].substr(-5).slice(0,-1);
-            if(new Date(date) < xScale.invert(900) && new Date(date) > xScale.invert(0))
+            
+            if(new Date(date) < xScale.invert(900) && new Date(date) > xScale.invert(0)) 
                 return xScale(new Date(date)) + 80;
         })
         .attr('cy', function(d) {
@@ -395,6 +401,7 @@ drawCircles(xScale, yScale, data) {
                 circles.attr('id', 'unselected')
                 .style('fill', 'white');
             }
+            hold.data.toolTip.destroy();
         })
         .on('click' , function(d) {
             // Movie gets selected
@@ -457,6 +464,12 @@ draw(){
     }
     // Movie is selected
     if (this.data.selectedMovie) {
+        
+        let genre=['Horror', 'Drama', 'Animation',  'Adventure',
+            'Crime', 'Action', 'Comedy', 'Biography'];
+        let colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
+        let hold = this;
+
         let movie = this.data.selectedMovie.replaceAll(' ','')
             .replaceAll(':','')
             .replaceAll('-','')
@@ -473,6 +486,10 @@ draw(){
         d3.select('#circles')
             .select(`.${movie}`)
             .attr('id', 'selected')
+            .style('fill', function(d) {
+                let temp = (hold.data.combined.filter(function(a){return a['Title'] === d['Title']}))
+                return colormap(temp[0]['genre']);
+            })
             .attr('r', 8)
             .raise();
     }

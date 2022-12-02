@@ -61,7 +61,7 @@
 }
 
 path {
-    stroke: steelblue;
+    stroke: green;
 }
 /* path:hover {
     stroke: lightgray;
@@ -70,7 +70,7 @@ path#hover {
     stroke: lightgray;
 }
 path#click {
-    stroke: firebrick;
+    stroke: green;
 }
 
 circle#unselected{
