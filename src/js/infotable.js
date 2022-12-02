@@ -17,6 +17,11 @@ class Info{
                 ascending: false,
                 key: 'writer'
             },
+            {
+                sorted: false,
+                ascending: false,
+                key: 'director'
+            },
             { // for frequency
                 sorted: false,
                 ascending: false,
@@ -45,8 +50,8 @@ class Info{
         ]
         
         this.margin={"top":0, "left":10,"right":15,"buttom":0}
-        this.bigVizHeight=200;
-        this.vizWidth = 140;
+        this.bigVizHeight=350;
+        this.vizWidth = 180;
         this.vizHeight = 50;
         this.smallVizHeight = 20;
         this.smallVizWidth=50;
@@ -54,9 +59,9 @@ class Info{
         this.scaleX2 = d3.scaleLinear()
             .domain([0, 10])
             .range([0+this.margin.left, this.vizWidth-this.margin.right-6]);
-        this.scaleX3 = d3.scaleLinear()
+        /*this.scaleX3 = d3.scaleLinear()
             .domain([1, 7])
-            .range([0+this.margin.left, this.vizWidth-this.margin.right-6]);
+            .range([0+this.margin.left, this.vizWidth-this.margin.right-6]);*/
         
         /*let categories=new Set();
         this.words.forEach(element => {
@@ -65,18 +70,22 @@ class Info{
         let categories=['Action', 'Drama', 'Animation',  'Adventure',
         'Crime', 'Horror', 'Comedy', 'Biography','Mystery', 'Fantasy','Romance','Family']
         
+        /*this.filteredData=this.combined.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        if (isNaN(globalFlags.selectedDistributor)){
+            console.log("true")
+            this.filteredData=this.combined
+        }*/
+        
         this.colormap=d3.scaleSequential(d3.interpolateRdBu).domain([d3.min(this.combined.map(d=>parseFloat(d["score"])))/10,d3.max(this.combined.map(d=>parseFloat(d["score"])))/10])//.range(['red','white','blue']);
-        //console.log("1",this.colormap(d3.min(this.combined.map(d=>parseFloat(d["score"])))/10))
-        //console.log("2",this.colormap(d3.max(this.combined.map(d=>parseFloat(d["score"])))/10))
-        //this.colormap= d3.scaleDiverging().domain([d3.min(this.combined.map(d=>parseFloat(d["score"])))/10,5,d3.max(this.combined.map(d=>parseFloat(d["score"])))/10]).interpolator(d3.interpolateRdBu)
         this.attachSortHandlers();
         this.drawLegend();
+        
 
     }
 
     drawLegend() {
         
-        let svgArray=["#margin2Axis","#margin3Axis","#margin4Axis","#margin5Axis","#margin6Axis"];
+        let svgArray=["#margin2Axis","#margin3Axis","#margin4Axis","#margin5Axis","#margin6Axis","#margin7Axis"];
         let counter=0;
         
         d3.select("#margin1Axis")
@@ -88,7 +97,7 @@ class Info{
         .attr('x',this.vizWidth/2-30)
         .attr('y',15)
         .text("Title")
-        let textArray=["Writer","IMDbScore","Runtime(min)","Budget(M$)","WorldSales(M$)"]
+        let textArray=["Writer","IMDbScore","Runtime(min)","Budget(M$)","WorldSales(M$)","Director"]
         svgArray.forEach(element => { 
             d3.select(element)
             .attr("width",this.vizWidth)
@@ -103,27 +112,32 @@ class Info{
             
         });
         let axis2=d3.axisTop().scale(this.scaleX2);
-        let axis3=d3.axisTop().scale(this.scaleX3);
+        //let axis3=d3.axisTop().scale(this.scaleX3);
         d3.select("#margin3Axis").append('g').selectAll('text')
             .data([0,2,4,6,8,10])
             .join('text')
             .attr("transform",  d=>  `translate(${this.scaleX2(d)},40)`)
         d3.select("#margin3Axis").select('g').attr("transform","translate(5,52)").call(axis2.ticks(6))
-        d3.select("#margin4Axis").append('g').selectAll('text')
+        /*d3.select("#margin4Axis").append('g').selectAll('text')
             .data([-100, -50, 0, 50, 100])
             .join("text")
             .attr("transform",  d=>  `translate(${this.scaleX3(d)},40)`)
-        d3.select("#margin4Axis").select('g').attr("transform","translate(5,52)").call(axis3.ticks(5))
+        d3.select("#margin4Axis").select('g').attr("transform","translate(5,52)").call(axis3.ticks(5))*/
 
     }
 
     drawTable() {
-        //this.drawLegend();
-        //<div class="grid-child purple">
+        //console.log(globalFlags.selectedDistributor)
+        this.filteredData=this.combined//.filter(d=>d["Distributor"]===globalFlags.selectedDistributor)
+        //console.log(this.filteredData)
+        
+        /*if (globalFlags.selectedDistributor===null){
+            this.filteredData=this.combined
+        }*/
         let rowSelection = //d3.select(".grid-child purple").append('table').attr("id",'#predictionTableBody')
         d3.select('#predictionTableBody')    
         .selectAll('tr')
-            .data(this.combined)
+            .data(this.filteredData)
             .join('tr');
        
         let forecastSelection = rowSelection.selectAll('td')
@@ -161,6 +175,11 @@ class Info{
             name:'writer',
             value: d.writer
         };
+        let director = {
+            type: 'text',
+            name:'director',
+            value: d.director
+        };
 
         let score = {
             type: 'viz',
@@ -190,7 +209,7 @@ class Info{
             
         };
 
-        let dataList = [title, writer, score, runtime,budget,sale];
+        let dataList = [title, writer, score, runtime,budget,sale,director];
     
         return dataList;
     }
@@ -198,7 +217,7 @@ class Info{
   /*  updateHeaders() {
       
 }*/
-    addGridlinesPercentage(containerSelect, ticks) {
+    /*addGridlinesPercentage(containerSelect, ticks) {
         containerSelect.selectAll('line')
         .data(ticks)
         .join('line')
@@ -208,7 +227,7 @@ class Info{
         .attr('y2',this.VizHeight)
         .attr('stroke','white')
         .attr("stroke-width","2")
-    }
+    }*/
    
     addRectangles(containerSelect) {
         //console.log(containerSelect.data())
@@ -244,7 +263,7 @@ class Info{
 
 
   
-    addRectanglesPercentage(containerSelect) {
+    /*addRectanglesPercentage(containerSelect) {
        //const heightPercent = 2/3;
        // const padPercent = (1 - heightPercent) / 2
     //console.log(containerSelect.data())
@@ -259,7 +278,7 @@ class Info{
        .attr("width",(d)=>this.scaleX3(d.value))
        .attr("opacity", 0.9)
        .attr("fill",d=>{return  this.colormap(parseFloat(d.score))/10})
-    }
+    }*/
    
     attachSortHandlers() 
     {

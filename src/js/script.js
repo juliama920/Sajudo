@@ -78,17 +78,18 @@ function redrawOthers(objectCalledFrom){
         globalFlags.streamChart.draw();
         globalFlags.table.draw();
         globalFlags.barChart.draw();
+        globalFlags.infoTable.drawTable();
         if(d3.select('#type').property('value')==="scatter"){
             globalFlags.bubbleChart.removeScatter()
             globalFlags.bubbleChart.drawScatter();
     
         }
         else{ globalFlags.bubbleChart.draw(); }
-        globalFlags.infoTable.drawTable();
+        
     }
 
     if(objectCalledFrom instanceof StreamChart){
-        console.log("called from StreamChart");
+        //console.log("called from StreamChart");
         globalFlags.lineChart.draw();
         globalFlags.table.draw();
         globalFlags.barChart.draw();
