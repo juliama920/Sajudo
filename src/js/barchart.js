@@ -68,25 +68,6 @@ class BarChart{
         // .append("g")
         // .attr("transform",
             // `translate(${margin.left}, ${margin.top})`); 
-
-            
-        svg
-        .append('text')
-        // .attr('id', 'testText')
-        .text('World Sales (in Billions of $)')
-        .attr('transform', 'rotate(-90)')
-        .attr('x', -340)
-        .attr('y', 40)
-        .attr('fill', 'black')
-        .attr('font-size', '16px')
-        .attr('font-weight','bold');
-
-        svg.append('text')
-            .text('Time in Years')
-            .attr('transform', `translate(400,505)`)
-            .attr('fill', 'black')
-            .attr('font-size', '16px')
-            .attr('font-weight','bold');
     }
 
             
@@ -96,8 +77,8 @@ class BarChart{
         height = 500 - margin.top - margin.bottom;
 
         
-        d3.select('.barChart').select('#axis').remove();
-
+        d3.select('.barChart').select("#axis").remove();
+        
         const svg = d3.select(".barChart")
         .append("g")
         .attr('id', 'axis')
@@ -120,6 +101,25 @@ class BarChart{
         .attr("transform", `translate(0, ${height})`)
         .call(d3.axisBottom(this.xScale)
         .tickFormat(d3.timeFormat('%Y')));
+
+                    
+        svg
+        .append('text')
+        // .attr('id', 'testText')
+        .text('World Sales (in Billions of $)')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -320)
+        .attr('y', -40)
+        .attr('fill', 'black')
+        .attr('font-size', '16px')
+        .attr('font-weight','bold');
+
+        svg.append('text')
+            .text('Time in Years')
+            .attr('transform', `translate(290,480)`)
+            .attr('fill', 'black')
+            .attr('font-size', '16px')
+            .attr('font-weight','bold');
 
 
         let max = (d3.max(topTwenty, function(d) { return +d["World Sales (in $)"];} ))
