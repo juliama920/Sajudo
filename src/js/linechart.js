@@ -3,6 +3,34 @@ class LineChart{
 constructor(globalFlags, redrawOthers) {
     this.data = globalFlags;
     this.redrawOthers = redrawOthers;
+
+    let disDropdown = document.getElementById('disDropdown');
+    disDropdown.addEventListener('change', (e,d) => {
+        if (d3.select('#disDropdown').property('value') === 'Disney'){
+            this.data.selectedDistributor = 'Walt Disney Studios Motion Pictures';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+            
+        }
+        else if (d3.select('#disDropdown').property('value') === 'TwentiethCenturyFox'){
+            this.data.selectedDistributor = 'Twentieth Century Fox';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+        }
+        else if(d3.select('#disDropdown').property('value') === 'ParamountPictures') {
+            this.data.selectedDistributor = 'Paramount Pictures';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+
+        }
+        else { // Warner Bros
+            this.data.selectedDistributor = 'Warner Bros.';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+        }
+    })
+
+
     
     let svg = d3.select('.lineChart');
     const MARGIN = {left: 70, right: 50, bottom: 100, top: 50};
@@ -330,10 +358,12 @@ drawCircles(xScale, yScale, data) {
             .replaceAll('(','')
             .replaceAll(')','')
             .replaceAll('\'','')
-            .replaceAll('!',''))
+            .replaceAll('!','')
+            .replaceAll(',',''))
         .attr('cx', function(d) {
             let date = d['Title'].substr(-5).slice(0,-1);
-            
+            // console.log(date);
+            // console.log(xScale.invert(900));
             if(new Date(date) < xScale.invert(900) && new Date(date) > xScale.invert(0)) 
                 return xScale(new Date(date)) + 80;
         })
@@ -353,7 +383,8 @@ drawCircles(xScale, yScale, data) {
                 .replaceAll('(','')
                 .replaceAll(')','')
                 .replaceAll('\'','')
-                .replaceAll('!','') ) {
+                .replaceAll('!','')
+                .replaceAll(',','') ) {
                     hold.data.tooltipValues.Movie = (d['Title']).toString();
                     
             hold.data.tooltipValues['Net Gross Income'] = '$' + d['World Sales (in $)'];
@@ -411,7 +442,8 @@ drawCircles(xScale, yScale, data) {
                 .replaceAll('(','')
                 .replaceAll(')','')
                 .replaceAll('\'','')
-                .replaceAll('!','');
+                .replaceAll('!','')
+                .replaceAll(',','');
                 
             d3.select('#circles')
             .selectAll('circle')
@@ -475,7 +507,8 @@ draw(){
             .replaceAll('-','')
             .replaceAll('(','')
             .replaceAll(')','')
-            .replaceAll('\'','');
+            .replaceAll('\'','')
+            .replaceAll(',','');
 
         d3.select('#circles')
             .selectAll('circle')

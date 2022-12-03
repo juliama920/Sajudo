@@ -180,7 +180,7 @@ class BarChart{
             }
         })
         .on('mouseout', function(e) {
-            rects.style("opacity", .5);
+            bars.style("opacity", .5);
 
             // d3.select('#toolTip').attr('hidden', 'hidden');
             // hold.globalFlags.tooltipValues.Movie = null;

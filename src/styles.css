@@ -1,6 +1,6 @@
 #content {
     display: grid;
-    grid-template-columns: 375px 345px 100px 375px;
+    grid-template-columns: 375px 345px 150px 375px;
     grid-auto-rows: 250px;
     grid-gap: 20px;
 }
@@ -63,9 +63,7 @@
 #lines path {
     stroke: green;
 }
-/* path:hover {
-    stroke: lightgray;
-} */
+
 path#hover {
     stroke: lightgray;
 }
