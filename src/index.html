@@ -43,7 +43,24 @@
     <br />
     <hr />
     <br />
-
+    <div id='introText'>
+      <p>
+        This project visualizes the top 1000 Highest Grossing Movies of all time. 
+        <!-- Throughout the page are visualizations highlighting different aspects of the data. 
+        First, there is a linechart where the movies are grouped by the movie distributors 
+        and shows an accumulation of movie incomes over time. Second, is a beeswarm chart 
+        displaying all the movies over their net gross income. The color of the bubbles reflect genre,
+        and radius indicates imBd score. Third, is a stream chart, grouped by genres so the area shows 
+        income for that genre over time. The accompanying bar chart displays the top 20 income 
+        contributors for that genre. Lastly we have a table displaying all the info for a data point at once. -->
+      </p>
+      <p>
+        In the linechart, users can interact the monetary success of the distribution companies over time.
+        Unsurprisingly, Walt Disney is the dominating company, earning more than any other company. However,
+        the second most successful company is not the studio who put out Avatar or Titanic, or any of the top 10 
+        highest grossing films. The second most successful company is Warner Brothers.
+      </p>
+    </div>
     <div id="content">
       <div id="lineChart">
         <svg class="lineChart" width="900" height="480"></svg>
@@ -65,6 +82,28 @@
       </div>
 
       <div id="bubbleChart">
+        <div id="bubbleText">
+          
+          <p>
+            If you observe: 
+            <span>
+              <select id="disDropdown">
+                <option selected value="Disney">Disney</option>
+                <option value="TwentiethCenturyFox">Twentieth Century Fox</option>
+                <option value="ParamountPictures">Paramount Pictures</option>
+                <option value="WarnerBros">Warner Bros.</option>
+              </select>
+              
+            </span> against Warner Brothers, 
+            you will find the top 3 Highest Grossing Movies of all time (Avatar, Avengers: End Game, and Titanic)
+            are outliers for their respective companies. Warner Brothers, contrarily, show consistent 
+            well distributed, successful movies. 
+          </p>
+          <p>
+            The pursuit of consistently good movies is more beneficial to overal monetary success than 
+            trying to make one smash hit. 
+          </p>
+        </div>
         <span>
           <label>Bubble Plot type:</label>
           <select id="type">

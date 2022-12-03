@@ -3,6 +3,34 @@ class LineChart{
 constructor(globalFlags, redrawOthers) {
     this.data = globalFlags;
     this.redrawOthers = redrawOthers;
+
+    let disDropdown = document.getElementById('disDropdown');
+    disDropdown.addEventListener('change', (e,d) => {
+        if (d3.select('#disDropdown').property('value') === 'Disney'){
+            this.data.selectedDistributor = 'Walt Disney Studios Motion Pictures';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+            
+        }
+        else if (d3.select('#disDropdown').property('value') === 'TwentiethCenturyFox'){
+            this.data.selectedDistributor = 'Twentieth Century Fox';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+        }
+        else if(d3.select('#disDropdown').property('value') === 'ParamountPictures') {
+            this.data.selectedDistributor = 'Paramount Pictures';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+
+        }
+        else { // Warner Bros
+            this.data.selectedDistributor = 'Warner Bros.';
+            this.redrawOthers(this);
+            this.data.lineChart.draw();
+        }
+    })
+
+
     
     let svg = d3.select('.lineChart');
     const MARGIN = {left: 70, right: 50, bottom: 100, top: 50};
