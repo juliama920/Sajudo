@@ -22,6 +22,7 @@ class StreamChart{
     }
 
     drawStreamChart(){
+        d3.select(".streamChart").select("svg").remove();
        // set the dimensions and margins of the graph
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
