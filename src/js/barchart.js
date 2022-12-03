@@ -13,7 +13,6 @@ class BarChart{
     draw(){
         this.genreRevenueMap = this.getGenreMap();
         this.createBarChart();
-        console.log(d3.select('.barChart').select("text"));
         this.drawAxis();
         if(d3.select("#genreDropdown").empty()) this.createDropdown();
         this.drawRects();
