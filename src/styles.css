@@ -220,10 +220,10 @@ td {
     text-align: center;
 }
 
-td:last-of-type
+/* td:last-of-type
 {
     text-align: center;
-}
+}*/
 
 .sorting {
     background: black;
@@ -307,4 +307,7 @@ header {
     border:none;
     max-width:100%;
     white-space:nowrap;
+}
+ .text {
+    text-align: left;
 }

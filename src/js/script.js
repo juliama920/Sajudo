@@ -100,7 +100,7 @@ function redrawOthers(objectCalledFrom){
         }
         else{ globalFlags.bubbleChart.draw(); }
         globalFlags.infoTable.drawTable();
-        globalFlags.infoTable.drawTable();
+        //globalFlags.infoTable.drawTable();
     }
 
     if(objectCalledFrom instanceof Table){
@@ -114,7 +114,7 @@ function redrawOthers(objectCalledFrom){
         }
         else{ globalFlags.bubbleChart.draw(); }
         globalFlags.infoTable.drawTable();
-        globalFlags.infoTable.drawTable();
+        //globalFlags.infoTable.drawTable();
     }
 
     if(objectCalledFrom instanceof Info){

@@ -17,11 +17,7 @@ class Info{
                 ascending: false,
                 key: 'writer'
             },
-            {
-                sorted: false,
-                ascending: false,
-                key: 'director'
-            },
+            
             { // for frequency
                 sorted: false,
                 ascending: false,
@@ -29,6 +25,13 @@ class Info{
                 alterFunc: d => parseFloat(+d)
             },
             
+            
+            {
+                sorted: false,
+                ascending: false,
+                key: 'RunTime2',
+                alterFunc: d => parseInt(+d)
+            },
             {
                 sorted: false,
                 ascending: false,
@@ -38,23 +41,22 @@ class Info{
             {
                 sorted: false,
                 ascending: false,
-                key: 'RunTime2',
-                alterFunc: d => parseFloat(+d)
+                key: 'World Sales (in $)',
+                alterFunc: d => parseInt(+d)
             },
             {
                 sorted: false,
                 ascending: false,
-                key: 'World Sales (in $)',
-                alterFunc: d => parseInt(+d)
+                key: 'director'
             },
         ]
         
         this.margin={"top":0, "left":10,"right":15,"buttom":0}
-        this.bigVizHeight=350;
-        this.vizWidth = 180;
+        this.bigVizWidth=350;
+        this.vizWidth = 207;
         this.vizHeight = 50;
         this.smallVizHeight = 20;
-        this.smallVizWidth=50;
+        this.smallVizWidth=160;
 
         this.scaleX2 = d3.scaleLinear()
             .domain([0, 10])
@@ -89,12 +91,12 @@ class Info{
         let counter=0;
         
         d3.select("#margin1Axis")
-        .attr("width",this.bigVizHeight)
+        .attr("width",this.bigVizWidth)
         .attr("height", this.vizHeight)
         .style("background", 'lightblue')
         .attr("opacity", 0.8)
         .append('text')
-        .attr('x',this.vizWidth/2-30)
+        .attr('x',this.bigVizWidth/2-30)
         .attr('y',15)
         .text("Title")
         let textArray=["Writer","IMDbScore","Runtime(min)","Budget(M$)","WorldSales(M$)","Director"]
@@ -143,13 +145,14 @@ class Info{
         let forecastSelection = rowSelection.selectAll('td')
             .data(this.rowToCellDataTransform)
             .join('td')
+            
            // .style(d=> "text-align",'center')
             .attr('class', d => d.class)
-            forecastSelection.filter(d => d.type ==="text").text(d => d.value)
-
+            forecastSelection.filter(d => d.type ==="text").text(d => d.value).attr("transform",`translate(${50},0)`).attr("class","text")//.attr("text-ancher","start")
+            forecastSelection.filter(d => d.type ==="number").text(d => d.value)
        
+        
         let vizSelection = forecastSelection.filter(d => d.type === 'viz');
-
         let svgSelect = vizSelection.selectAll('svg')
             .data(d => [d])
             .join('svg')
@@ -175,11 +178,6 @@ class Info{
             name:'writer',
             value: d.writer
         };
-        let director = {
-            type: 'text',
-            name:'director',
-            value: d.director
-        };
 
         let score = {
             type: 'viz',
@@ -190,23 +188,28 @@ class Info{
         };
   
         let runtime = {
-            type: 'text',
+            type: 'number',
             name: 'runTime',
-            value: (d["RunTime2"]),
+            value: parseInt(d["RunTime2"]),
             
         };
         let budget = {
-            type: 'text',
+            type: 'number',
             name:'budget',
-            value: d.budget/10**6
+            value: parseFloat(d.budget/10**6)
         };
 
         let sale = {
-            type: 'text',
+            type: 'number',
             name: 'sale',
             value: parseInt(d["World Sales (in $)"]/10**6)
                 
             
+        };
+        let director = {
+            type: 'text',
+            name:'director',
+            value: d.director
         };
 
         let dataList = [title, writer, score, runtime,budget,sale,director];
@@ -261,24 +264,6 @@ class Info{
         
      }
 
-
-  
-    /*addRectanglesPercentage(containerSelect) {
-       //const heightPercent = 2/3;
-       // const padPercent = (1 - heightPercent) / 2
-    //console.log(containerSelect.data())
-       containerSelect.selectAll('rect')
-       .data(d=> [d])   
-       .join("rect")
-       .attr("x", (d) =>  this.scaleX3(0))
-
-       .attr("y", 0)
-       .attr("transform",  `translate(${20},2.5)`)
-       .attr("height", 15)
-       .attr("width",(d)=>this.scaleX3(d.value))
-       .attr("opacity", 0.9)
-       .attr("fill",d=>{return  this.colormap(parseFloat(d.score))/10})
-    }*/
    
     attachSortHandlers() 
     {
