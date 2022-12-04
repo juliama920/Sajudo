@@ -305,7 +305,15 @@ drawLines(xScale, yScale, data) {
                 .raise();
 
             hold.drawCircles(xScale, yScale, hold.data.grossing);
-            hold.redrawOthers(hold);
+            //hold.redrawOthers(hold);
+            globalFlags.table.draw();
+            if(d3.select('#type').property('value')==="scatter"){
+                globalFlags.bubbleChart.removeScatter()
+                globalFlags.bubbleChart.drawScatter();
+        
+            }
+            else{ globalFlags.bubbleChart.draw(); }
+        
         });
     
     // Reset path selector
@@ -338,7 +346,7 @@ drawCircles(xScale, yScale, data) {
     let selectedData = distributors.get(this.data.selectedDistributor);
 
     let genre=['Action', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Horror', 'Comedy', 'Biography'];
+    'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy'];
     let colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
     
 
@@ -461,7 +469,10 @@ drawCircles(xScale, yScale, data) {
                 .raise();
 
             hold.data.selectedMovie = d.path[0].__data__.Title;
+            let t1=hold.data.combined.filter(function(a){return a['Title'] === hold.data.selectedMovie})
+            hold.data.Genre=t1[0].genre;
             hold.redrawOthers(hold);
+            
         });
     svg.select('.cover').raise();
     svg.select('text').raise();
@@ -497,8 +508,8 @@ draw(){
     // Movie is selected
     if (this.data.selectedMovie) {
         
-        let genre=['Horror', 'Drama', 'Animation',  'Adventure',
-            'Crime', 'Action', 'Comedy', 'Biography'];
+        let genre=['Action', 'Drama', 'Animation',  'Adventure',
+        'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy'];
         let colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
         let hold = this;
 

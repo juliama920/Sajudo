@@ -145,15 +145,15 @@ class BubbleChart{
             //d3.selectAll(".bubble").attr("opacity",0.4)
             
             //console.log(d)
-            if(e != that.e) {
+            //if(e != that.e) {
                 
                 that.globalFlags.tooltipValues.Movie = d.Title;
                 that.globalFlags.tooltipValues.Genre = d.genre;
                 that.globalFlags.tooltipValues.IMDbScore = d.score;
                 
 
-            }
-            that.e = e;
+            //}
+            //that.e = e;
             that.globalFlags.toolTip.draw(e.x, e.pageY);
         });
         this.axesText();
@@ -277,6 +277,12 @@ class BubbleChart{
             .attr("r",function (d) { return z(d[yFeature])})
             //.attr("transform", `translate(0, ${- margin.top - margin.bottom})`)
             .style("fill", d => this.colormap(d.genre)).attr("opacity",0.8)
+            /*.on("click",(e,d)=>{
+            
+                that.globalFlags.selectedMovie = d.Title;
+                that.globalFlags.Genre=d.genre;
+                globalFlags.barChart.draw();
+            })*/
 
 
         if(globalFlags.selectedMovie!=null){

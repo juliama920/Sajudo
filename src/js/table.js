@@ -65,6 +65,8 @@ class Table{
                         d3.select(this)
                             .attr('id','highlight');
                         thisH.data.selectedMovie = this.textContent;
+                        let t1=thisH.data.combined.filter(function(a){return a['Title'] === thisH.data.selectedMovie})
+                        thisH.data.Genre=t1[0].genre;
                         thisH.redrawOthers(thisH);
                     });
                 
