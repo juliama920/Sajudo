@@ -394,6 +394,7 @@ drawCircles(xScale, yScale, data) {
                 .replaceAll('!','')
                 .replaceAll(',','') ) {
                     hold.data.tooltipValues.Movie = (d['Title']).toString();
+                    hold.data.tooltipValues.Distributor = (d['Distributor']).toString()
                     
             hold.data.tooltipValues['Net Gross Income'] = '$' + d['World Sales (in $)'];
                 }
