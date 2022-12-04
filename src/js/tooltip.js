@@ -9,7 +9,8 @@ class Tooltip{
         this.lastY = yCoord;
 
         d3.select("#toolTip").select("svg").remove();
-        d3.select("#toolTip").append("svg").attr("width", "300").attr("height", "170")
+        d3.select("#toolTip")
+        .append("svg").attr("width", "300").attr("height", "170")
         // .attr("x",xCoord).attr("y", yCoord)
         .attr("transform",`translate(${xCoord - 900 }, ${yCoord - 1000})`)
         .append("path")

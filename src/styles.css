@@ -32,8 +32,8 @@ p.info {
 
 #content {
     display: grid;
-    grid-template-columns: 375px 375px 150px 750px;
-    grid-auto-rows: 250px 250px 130px 250px 250px 100px 250px 250px 250px;
+    grid-template-columns: 375px 375px 150px 10px;
+    grid-auto-rows: 250px 250px 130px 250px 250px 100px 250px 250px 20px;
     grid-gap: 20px;
 }
 
