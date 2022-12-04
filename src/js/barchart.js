@@ -23,7 +23,7 @@ class BarChart{
         d3.select(".barChart").select("#rects").remove();
 
         let rects = d3.select(".barChart").append("g").attr("id", "rects");
-        let topThirty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
+        let topThirty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["World Sales (in $)"] > b["World Sales (in $)"]).slice(0,20);
 
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
@@ -45,13 +45,13 @@ class BarChart{
             return x + 90 ;
         })
         .attr("y", (d, i) => {
-            return height + 20 - this.yScale(d["International Sales (in $)"]);
+            return this.yScale(d["World Sales (in $)"]);
         })
         .attr("width", (d, i) => {
             return 8;
         })
         .attr("height", (d, i) => {
-            return  this.yScale(d["International Sales (in $)"]);
+            return  this.yScale(d["World Sales (in $)"]);
         })
         .style('stroke', 'black');
     }
@@ -83,8 +83,8 @@ class BarChart{
         .append("g")
         .attr('id', 'axis')
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
-        let topTwenty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["International Sales (in $)"] > b["International Sales (in $)"]).slice(0,20);
-// console.log(topTwenty);
+        let topTwenty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["World Sales (in $)"] > b["World Sales (in $)"]).slice(0,20);
+console.log(topTwenty);
         const keys = this.globalFlags.grossing.columns.slice(1);
 
         var parseTime = d3.timeParse("%B %d, %Y");
