@@ -1,6 +1,36 @@
+.header {
+  text-align: center;
+  background: steelblue;
+  font-size: 30px;
+  color: black;
+  padding: 0;
+}
+
+.subHeader {
+    padding: 0;
+    background: black;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: 16px;
+}
+
+p.info {
+    
+  margin-left:auto;
+  margin-right:auto;
+    width: 60%;
+    text-align: center;
+    font-size: 16px;
+    color: black;
+}
+
 #content {
     display: grid;
-    grid-template-columns: 375px 345px 150px 375px;
+    grid-template-columns: 375px 375px 150px 750px;
     grid-auto-rows: 250px;
     grid-gap: 20px;
 }
@@ -34,30 +64,38 @@
     grid-row-end: 3;
 }
 
+#bubbleText{
+    grid-column-start: 1;
+    grid-column-end: 5;
+    grid-row-start: 3;
+    grid-row-end: 4;
+}
+
 #bubbleChart{
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 3;
-    grid-row-end: 4;
+    grid-row-start: 4;
+    grid-row-end: 5;
 }
 
 #streamChart{
     grid-column-start: 1;
     grid-column-end: 3;
-    grid-row-start: 5;
-    grid-row-end: 7;
+    grid-row-start: 6;
+    grid-row-end: 8;
 }
 #barChart{
     grid-column-start: 3;
     grid-column-end: 5;
-    grid-row-start: 5;
-    grid-row-end: 7;
+    grid-row-start: 6;
+    grid-row-end: 8;
 }
 #infoTable{
     grid-column-start: 1;
     grid-column-end: 4;
-    grid-row-start: 7;
+    grid-row-start: 8;
     grid-row-end: 9;
+    grid-row: 200px;
 }
 
 #lines path {

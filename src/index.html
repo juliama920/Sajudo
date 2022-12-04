@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
+  <div class="header">
   <link rel="shortcut icon" href="#">
-    <title>Sajudo DATAVIS Final Project</title>
-
+    <h1>1,000 Highest Grossing Movies</h1>
+    <h4>By Donald Harrison, Julia Ma, and Sara Nurollahian</h3>
     <!-- Include JS scripts -->
       <script src="https://d3js.org/d3.v7.min.js"></script>
 
      <link rel="stylesheet" href="styles.css" />
     <!-- End of includes -->
+    
+  <div class="subHeader" backgound="black">
+    <button onclick="location.href='../ProcessBook.pdf'">Process Book</button>
+    <button onclick="location.href='https://www.youtube.com/watch?v=jfKfPfyJRdk'">Demo Video</button>
+  </div>
+  </div>
 </head>
 
 <body>
-    <h3>Final Project</h3>
+    <!-- <h3>Final Project</h3>
     <address>
         <span>    <b>Julia Ma</b>
         </span>
@@ -39,12 +45,12 @@
       </span>
       <span>    <b>U1131452</b>
       </span>
-    </address>
-    <br />
+    </address> -->
+    <!-- <br />
     <hr />
-    <br />
-    <div id='introText'>
-      <p>
+    <br /> -->
+    <div id='introText' width="1651px">
+      <p class="info">
         This project visualizes the top 1000 Highest Grossing Movies of all time. 
         <!-- Throughout the page are visualizations highlighting different aspects of the data. 
         First, there is a linechart where the movies are grouped by the movie distributors 
@@ -54,7 +60,7 @@
         income for that genre over time. The accompanying bar chart displays the top 20 income 
         contributors for that genre. Lastly we have a table displaying all the info for a data point at once. -->
       </p>
-      <p>
+      <p class="info">
         In the linechart, users can interact the monetary success of the distribution companies over time.
         Unsurprisingly, Walt Disney is the dominating company, earning more than any other company. However,
         the second most successful company is not the studio who put out Avatar or Titanic, or any of the top 10 
@@ -81,29 +87,30 @@
         </table>
       </div>
 
-      <div id="bubbleChart">
-        <div id="bubbleText">
+      
+      <div id="bubbleText" width="1651px">
+      <p class="info">
+        If you observe: 
+        <span>
+          <select id="disDropdown">
+            <option selected value="Disney">Disney</option>
+            <option value="TwentiethCenturyFox">Twentieth Century Fox</option>
+            <option value="ParamountPictures">Paramount Pictures</option>
+            <option value="WarnerBros">Warner Bros.</option>
+          </select>
           
-          <p>
-            If you observe: 
-            <span>
-              <select id="disDropdown">
-                <option selected value="Disney">Disney</option>
-                <option value="TwentiethCenturyFox">Twentieth Century Fox</option>
-                <option value="ParamountPictures">Paramount Pictures</option>
-                <option value="WarnerBros">Warner Bros.</option>
-              </select>
-              
-            </span> against Warner Brothers, 
-            you will find the top 3 Highest Grossing Movies of all time (Avatar, Avengers: End Game, and Titanic)
-            are outliers for their respective companies. Warner Brothers, contrarily, show consistent 
-            well distributed, successful movies. 
-          </p>
-          <p>
-            The pursuit of consistently good movies is more beneficial to overal monetary success than 
-            trying to make one smash hit. 
-          </p>
-        </div>
+        </span> against Warner Brothers, 
+        you will find the top 3 Highest Grossing Movies of all time (Avatar, Avengers: End Game, and Titanic)
+        are outliers for their respective companies. Warner Brothers, contrarily, show consistent 
+        well distributed, successful movies. 
+      </p>
+      <p class="info">
+        The pursuit of consistently good movies is more beneficial to overal monetary success than 
+        trying to make one smash hit. 
+      </p>
+      </div>
+
+      <div id="bubbleChart">
         <span>
           <label>Bubble Plot type:</label>
           <select id="type">
