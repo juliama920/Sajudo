@@ -106,7 +106,7 @@ class BarChart{
         svg
         .append('text')
         // .attr('id', 'testText')
-        .text('World Sales (in Billions of $)')
+        .text('World Sales (in Millions of $)')
         .attr('transform', 'rotate(-90)')
         .attr('x', -320)
         .attr('y', -40)
@@ -135,7 +135,7 @@ class BarChart{
 
         svg.append("g")
         .call(d3.axisLeft(this.yScale)
-        .tickFormat((d)=> d/1000000000 + ' B'));
+        .tickFormat((d)=> d/1000000000 + ' M'));
     }
 
     registerListeners(){
