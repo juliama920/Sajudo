@@ -45,13 +45,14 @@ class BarChart{
             return x + 90 ;
         })
         .attr("y", (d, i) => {
-            return this.yScale(d["World Sales (in $)"]);
+        return  this.yScale(d["World Sales (in $)"]);
+
         })
         .attr("width", (d, i) => {
             return 8;
         })
         .attr("height", (d, i) => {
-            return  this.yScale(d["World Sales (in $)"]);
+            return height + 20 - this.yScale(d["World Sales (in $)"]);
         })
         .style('stroke', 'black');
     }
