@@ -144,6 +144,8 @@ class StreamChart{
 
         d3.select(".streamChart").on("mousemove", e => {
             this.globalFlags.toolTip.draw(e.x, e.pageY);
+        }).on("mouseenter", e => {
+            this.globalFlags.tooltipValues = {};
         });
     }
 
