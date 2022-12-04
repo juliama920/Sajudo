@@ -31,7 +31,7 @@ p.info {
 #content {
     display: grid;
     grid-template-columns: 375px 375px 150px 750px;
-    grid-auto-rows: 250px;
+    grid-auto-rows: 250px 250px 130px 250px 250px 250px 250px 250px;
     grid-gap: 20px;
 }
 
@@ -95,7 +95,6 @@ p.info {
     grid-column-end: 4;
     grid-row-start: 8;
     grid-row-end: 9;
-    grid-row: 200px;
 }
 
 #lines path {
