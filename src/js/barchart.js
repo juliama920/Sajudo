@@ -136,7 +136,7 @@ console.log(topTwenty);
 
         svg.append("g")
         .call(d3.axisLeft(this.yScale)
-        .tickFormat((d)=> d/1000000000 + ' M'));
+        .tickFormat((d)=> d/1000000000 + ' B'));
     }
 
     registerListeners(){
