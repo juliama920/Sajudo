@@ -15,7 +15,7 @@ class BubbleChart{
             .domain([d3.min(this.filteredData.map(d=>parseInt(d["score"]))),8.5,d3.max(this.filteredData.map(d=>parseInt(d["score"])))]).range([1,8.5,14])
         //let numNodes = this.gross.length;
         let genre=['Action', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy'] // removed the family because it had only 1, 'Mystery', 'Fantasy','Romance'
+        'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy'] 
         this.colormap=d3.scaleOrdinal().domain(genre).range(d3.schemeCategory10)  
     
     }
@@ -162,8 +162,8 @@ class BubbleChart{
     
     
     addLegend(){
-        let genre=['Horror', 'Drama', 'Animation',  'Adventure',
-        'Crime', 'Action', 'Comedy', 'Biography' ,'Mystery', 'Fantasy']//,'Romance'
+        let genre=['Action', 'Drama', 'Animation',  'Adventure',
+        'Crime', 'Horror', 'Comedy', 'Biography' ,'Mystery', 'Fantasy']//,'Romance'
         let size=10
         d3.select(".bubbleChart").selectAll(".beeslegend")
             .data(genre)
