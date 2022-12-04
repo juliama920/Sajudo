@@ -23,6 +23,7 @@ class StreamChart{
 
     drawStreamChart(){
         d3.select(".streamChart").select("svg").remove();
+
        // set the dimensions and margins of the graph
         const margin = {top: 20, right: 30, bottom: 30, left: 90},
         width = 800 - margin.left - margin.right,
@@ -36,6 +37,24 @@ class StreamChart{
         .append("g")
         .attr("transform",
             `translate(${margin.left}, ${margin.top})`);
+
+        svg
+        .append('text')
+        // .attr('id', 'testText')
+        .text('Popularity (Genre Revenue)')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -320)
+        .attr('y', -40)
+        .attr('fill', 'black')
+        .attr('font-size', '16px')
+        .attr('font-weight','bold');
+
+        svg.append('text')
+        .text('Time in Years')
+        .attr('transform', `translate(290,480)`)
+        .attr('fill', 'black')
+        .attr('font-size', '16px')
+        .attr('font-weight','bold');
         
         //get keys, this gets an array of the movies genres
         this.allMoviesGenres = this.getAllMovieGenres();
@@ -106,6 +125,7 @@ class StreamChart{
     registerEventListeners(){
         let paths =  d3.select(".streamChart").selectAll("path");
         paths.on("mouseover", e => {
+            this.globalFlags.tooltipValues.Genre = e.target.id;
             this.globalFlags.toolTip.destroy();
             //this.allMoviesGenres
             const color = d3.scaleOrdinal().domain(this.genre).range(d3.schemeCategory10);
@@ -120,6 +140,10 @@ class StreamChart{
             e.target.style.opacity = 1;
             //console.log(this.globalFlags.Genre);
             this.globalFlags.barChart.draw();
+        });
+
+        d3.select(".streamChart").on("mousemove", e => {
+            this.globalFlags.toolTip.draw(e.x, e.pageY);
         });
     }
 

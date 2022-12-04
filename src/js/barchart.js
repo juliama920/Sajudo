@@ -14,7 +14,7 @@ class BarChart{
         this.genreRevenueMap = this.getGenreMap();
         this.createBarChart();
         this.drawAxis();
-        if(d3.select("#genreDropdown").empty()) this.createDropdown();
+        // if(d3.select("#genreDropdown").empty()) this.createDropdown();
         this.drawRects();
         this.registerListeners();
     }
