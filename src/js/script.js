@@ -7,6 +7,18 @@ let movieCSVPath = "./data/movies(1986-2016).csv";
 let grossingCSVPath = "./data/Highest Holywood Grossing Movies.csv";
 let combinedCSVPath = "./data/combined.csv";
 //Wait for promise to resolve with data and then call draw functions
+async function loadData() {
+    const movieData = d3.csv("./data/movies(1986-2016).csv");
+    const grossData = d3.csv("./data/Highest Holywood Grossing Movies.csv");
+    const combined = d3.csv("./data/combined.csv")
+    return {movieData, grossData, combined};
+}
+// loadData().then((data)=> console.log(data[0]));
+loadData().then((data)=>{
+    console.log('movie data')
+    console.log(data.movieData);
+})
+
 Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPath)]).then(data => {
     console.log(data);
     //Load in movies csv
