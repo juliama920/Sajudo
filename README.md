@@ -8,7 +8,7 @@ Our visualization can be found here:
 https://juliama920.github.io/dataviscourse-pr-Sajudo/ 
 
 Project Video:
-
+https://www.youtube.com/watch?v=2W0Ytyi0wbI 
 
 
 datasets provided courtesy of:
