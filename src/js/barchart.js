@@ -85,7 +85,6 @@ class BarChart{
         .attr('id', 'axis')
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
         let topTwenty = this.genreRevenueMap.get(this.globalFlags.Genre).sort((a,b) => a["World Sales (in $)"] > b["World Sales (in $)"]).slice(0,20);
-console.log(topTwenty);
         const keys = this.globalFlags.grossing.columns.slice(1);
 
         var parseTime = d3.timeParse("%B %d, %Y");
@@ -128,9 +127,6 @@ console.log(topTwenty);
         // Add Y axis
         this.yScale = d3.scaleLinear()
         .domain([0, max])
-        // .domain(d3.extent(this.globalFlags.grossing, function(d) { 
-        //     return parseInt(d["World Sales (in $)"]);
-        // }))
         .range([ height, 0 ])
         .nice();
 
