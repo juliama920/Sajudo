@@ -2,7 +2,7 @@
 Data Vis Group Project
 By Donald Harrison, Julia Ma, and Sara Nurollahian
 
-Our code is contained in the js folder and index.html
+Our code is contained in the js folder and index.html. styles.css contains all of our css styling.
 
 Our visualization can be found here:
 https://juliama920.github.io/dataviscourse-pr-Sajudo/ 
