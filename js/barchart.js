@@ -106,7 +106,7 @@ class BarChart{
         svg
         .append('text')
         // .attr('id', 'testText')
-        .text('World Sales (in Millions of $)')
+        .text('World Sales (in Billions of $)')
         .attr('transform', 'rotate(-90)')
         .attr('x', -320)
         .attr('y', -40)
