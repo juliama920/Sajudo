@@ -4,7 +4,7 @@ By Donald Harrison, Julia Ma, and Sara Nurollahian
 
 Our code is contained in the js folder and index.html
 
-Our visualization can be found her:
+Our visualization can be found here:
 https://juliama920.github.io/dataviscourse-pr-Sajudo/ 
 
 Project Video:
