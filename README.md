@@ -1,5 +1,14 @@
 # Sajudo
 Data Vis Group Project
+By Donald Harrison, Julia Ma, and Sara Nurollahian
+
+Our code is contained in the js folder and index.html
+
+Our visualization can be found her:
+https://juliama920.github.io/dataviscourse-pr-Sajudo/ 
+
+Project Video:
+
 
 
 datasets provided courtesy of:
