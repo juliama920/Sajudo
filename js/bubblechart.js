@@ -146,7 +146,7 @@ class BubbleChart{
             
             //console.log(d)
             //if(e != that.e) {
-                
+                that.globalFlags.toolTip.clearData();
                 that.globalFlags.tooltipValues.Movie = d.Title;
                 that.globalFlags.tooltipValues.Genre = d.genre;
                 that.globalFlags.tooltipValues.IMDbScore = d.score;

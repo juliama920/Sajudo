@@ -153,11 +153,15 @@ class Info{
        
         
         let vizSelection = forecastSelection.filter(d => d.type === 'viz');
+        let hold = this;
         let svgSelect = vizSelection.selectAll('svg')
             .data(d => [d])
             .join('svg')
             .attr('width', this.vizWidth)
-            .attr('height',  this.smallVizHeight);
+            .attr('height',  this.smallVizHeight)
+            .on('mouseenter', (e) => {
+                globalFlags.toolTip.destroy();
+            });
         
 
 
