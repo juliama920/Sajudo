@@ -8,6 +8,7 @@ let grossingCSVPath = "./data/Highest Holywood Grossing Movies.csv";
 let combinedCSVPath = "./data/combined.csv";
 //Wait for promise to resolve with data and then call draw functions
 Promise.all([d3.csv(movieCSVPath), d3.csv(grossingCSVPath), d3.csv(combinedCSVPath)]).then(data => {
+    console.log(data);
     //Load in movies csv
     console.log('data loaded');
     globalFlags.movies = data[0];
